@@ -312,6 +312,7 @@ function handleDeposit(e) {
     const accKey = document.getElementById('depositAccount').value;
     const currency = document.getElementById('depositCurrency').value;
     const amount = parseFloat(document.getElementById('depositAmount').value);
+    const description = document.getElementById('depositDescription').value.trim();
     if (isNaN(amount) || amount <= 0) return;
 
     triggerLoadingAnimation(async () => {
@@ -323,7 +324,7 @@ function handleDeposit(e) {
             account: accounts[accKey].label,
             currency: currency,
             amount: amount,
-            description: `Deposit to ${accounts[accKey].label}`
+            description: description || `Deposit to ${accounts[accKey].label}`
         });
 
         document.getElementById('depositForm').reset();
@@ -342,6 +343,7 @@ function handleWithdraw(e) {
     const accKey = document.getElementById('withdrawAccount').value;
     const currency = document.getElementById('withdrawCurrency').value;
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const description = document.getElementById('withdrawDescription').value.trim();
     if (isNaN(amount) || amount <= 0) return;
 
     if (accounts[accKey].currencies[currency] < amount) {
@@ -358,7 +360,7 @@ function handleWithdraw(e) {
             account: accounts[accKey].label,
             currency: currency,
             amount: amount,
-            description: `Withdrawal from ${accounts[accKey].label}`
+            description: description || `Withdrawal from ${accounts[accKey].label}`
         });
 
         document.getElementById('withdrawForm').reset();
