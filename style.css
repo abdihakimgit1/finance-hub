@@ -300,8 +300,22 @@
         /* Tables */
         .table-container {
             overflow-x: auto;
+            overflow-y: auto;
+            max-height: 420px;
             border-radius: 12px;
             border: 1px solid rgba(51, 65, 85, 0.5);
+            position: relative;
+        }
+
+        /* Keep the transactions table compact; scroll vertically when there are many rows. */
+        .table-container table {
+            min-width: 760px;
+        }
+
+        .table-container thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
         
         .table-container table {
@@ -408,4 +422,139 @@ body.theme-dark .border-gray-200 {
 }
 body.theme-light .input-field {
     background: #ffffff !important;
+}
+
+
+/* ============================================================
+   FinanceHub UI polish / fixed cards & tables
+   ============================================================ */
+.card {
+    height: auto;
+}
+.profile-card {
+    min-height: 0 !important;
+    height: auto !important;
+}
+.card-item {
+    position: relative;
+    min-height: 172px;
+    height: 172px;
+    background: var(--surface) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
+}
+.card-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.14);
+}
+.card-item .wallet-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.card-item .wallet-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    color: #fff;
+    background: var(--primary);
+    box-shadow: 0 7px 18px rgba(16, 185, 129, 0.22);
+}
+.card-item .wallet-eye {
+    border: 0;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+}
+.card-item .wallet-eye:hover { color: var(--primary); background: var(--primary-bg); }
+.card-item .wallet-balance-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+}
+.card-item .wallet-balance {
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 800;
+    color: #f8fafc;
+    margin-top: 4px;
+}
+.theme-light .card-item .wallet-balance { color: #0f172a; }
+.theme-light .card-item .wallet-balance-label { color: #64748b; }
+
+/* Truly fixed-height scroll area: rows scroll, page/card does not grow. */
+.table-container {
+    width: 100%;
+    height: 420px;
+    max-height: 420px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+.table-container table {
+    min-width: 760px;
+    width: max-content;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.table-container thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--surface-strong);
+    box-shadow: inset 0 -2px 0 var(--primary);
+}
+.theme-light .table-container thead th { background: #f8fafc; }
+.theme-dark .table-container td { color: #cbd5e1; }
+.theme-dark .table-container tbody tr:hover td { background: rgba(16,185,129,.055); }
+.theme-light .table-container td { color: #334155; border-bottom-color: rgba(203,213,225,.65); }
+.theme-light .table-container tr:hover td { background: rgba(16,185,129,.05); }
+
+/* Light/dark consistency for Tailwind utility text used in the original UI. */
+.theme-light .text-white { color: #0f172a !important; }
+.theme-light .text-slate-300 { color: #475569 !important; }
+.theme-light .text-slate-400 { color: #64748b !important; }
+.theme-light .text-slate-500 { color: #64748b !important; }
+.theme-light .border-slate-700\/50,
+.theme-light .border-slate-700\/40 { border-color: rgba(203,213,225,.7) !important; }
+.theme-light .bg-slate-800 { background: #fff !important; }
+.theme-light .bg-slate-900 { background: #f8fafc !important; }
+.theme-light .hover\:text-white:hover { color: #0f172a !important; }
+.theme-light aside { color: #334155; }
+.theme-light .toggle-switch span, .theme-light .toggle-switch { color: #334155; }
+
+/* Dark mode surfaces stay deep and readable even when Tailwind classes are present. */
+.theme-dark .card,
+.theme-dark .card-item,
+.theme-dark .account-card { background: #1e293b !important; border-color: #334155 !important; }
+.theme-dark .table-container { background: #111827; border-color: #334155; }
+.theme-dark .table-container thead th { background: #172033; color: #34d399; }
+
+/* Password reveal buttons should not affect form layout. */
+#loginPassToggle, #settingsPassToggle { line-height: 1; }
+
+@media (min-width: 768px) {
+    main { min-width: 0; }
+    .profile-card { padding: 20px 24px; }
+    .accounts-grid { align-items: stretch; }
+}
+@media (max-width: 767px) {
+    .table-container { height: 360px; max-height: 360px; }
+    .card-item { height: 158px; min-height: 158px; }
+    .profile-card { margin-bottom: 16px !important; }
 }

@@ -29,8 +29,8 @@ function resetSessionTimer() {
     sessionTimeout = setTimeout(() => {
         const warningEl3 = document.getElementById('sessionWarning');
         if (warningEl3) warningEl3.classList.add('hidden');
-        handleLogout();
-        alert("Your session has expired due to inactivity. Please sign in again.");
+        handleLogout(true);
+        alert(currentLang === 'en' ? 'Your session has expired due to inactivity. Please sign in again.' : 'Kulankaagu wuu dhacay sababo la xiriira maqnaansho. Fadlan mar kale gal.');
     }, SESSION_TIMEOUT);
 }
 
@@ -43,7 +43,7 @@ async function handleLogin(e) {
 
     if (!username || !password) {
         errorEl.classList.remove('hidden');
-        errorEl.textContent = 'Fadlan buuxi dhammaan meelaha!';
+        errorEl.textContent = currentLang === 'en' ? 'Please fill in all fields!' : 'Fadlan buuxi dhammaan meelaha!';
         return;
     }
 
@@ -56,7 +56,7 @@ async function handleLogin(e) {
 
     if (error || !data.session) {
         errorEl.classList.remove('hidden');
-        errorEl.textContent = 'Username ama Password khalad!';
+        errorEl.textContent = currentLang === 'en' ? 'Invalid username or password!' : 'Magaca isticmaalaha ama furaha sirta ah waa khalad!';
         return;
     }
 
@@ -64,7 +64,13 @@ async function handleLogin(e) {
     await showApp();
 }
 
-async function handleLogout() {
+async function handleLogout(force = false) {
+    if (!force) {
+        const message = currentLang === 'en'
+            ? 'Are you sure you want to log out?'
+            : 'Ma hubtaa inaad rabto inaad ka baxdo nidaamka?';
+        if (!confirm(message)) return;
+    }
     await sb.auth.signOut();
     currentUser = null;
     clearTimeout(sessionTimeout);
@@ -77,6 +83,24 @@ async function handleLogout() {
     if (loginPage) loginPage.classList.remove('hidden');
     const loginPass = document.getElementById('loginPass');
     if (loginPass) loginPass.value = '';
+}
+
+function toggleLoginPassword() {
+    const input = document.getElementById('loginPass');
+    const button = document.getElementById('loginPassToggle');
+    if (!input || !button) return;
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    button.innerHTML = `<i class="fa-solid ${showing ? 'fa-eye' : 'fa-eye-slash'}"></i>`;
+}
+
+function toggleSettingsPassword() {
+    const input = document.getElementById('settingsNewPassword');
+    const button = document.getElementById('settingsPassToggle');
+    if (!input || !button) return;
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    button.innerHTML = `<i class="fa-solid ${showing ? 'fa-eye' : 'fa-eye-slash'}"></i>`;
 }
 
 async function showApp() {
@@ -268,28 +292,47 @@ function triggerLoadingAnimation(callback) {
 
 function renderDashboard() {
     const grid = document.getElementById('accountsGrid');
+    if (!grid) return;
     grid.innerHTML = '';
+    const balanceLabel = currentLang === 'en' ? 'Available Balance' : 'Haraaga La Heli Karo';
+    const eyeLabel = currentLang === 'en' ? 'Show / hide balance' : 'Muuji / qari haraaga';
+
     Object.keys(accounts).forEach(key => {
         const acc = accounts[key];
-        let currencyHTML = '';
-        Object.keys(acc.currencies).forEach(cur => {
-            let symbol = cur === 'USD' ? '$' : ' ';
-            let displayValue = isBalancesHidden ? '••••••' : `${symbol}${Number(acc.currencies[cur]).toLocaleString()}`;
+        const currencies = Object.keys(acc.currencies || {});
+        const primaryCurrency = currencies[0] || 'USD';
+        const primaryAmount = Number(acc.currencies?.[primaryCurrency] || 0);
+        const symbol = primaryCurrency === 'USD' ? '$' : '';
+        const displayValue = isBalancesHidden ? '••••••' : `${symbol}${primaryAmount.toLocaleString()}`;
 
-            currencyHTML += `
-                <div class="flex justify-between items-center border-b border-slate-700/50 py-2 last:border-0">
-                    <span class="text-xs text-slate-400 font-medium">${cur}</span>
-                    <span class="font-mono text-white text-md font-bold">${displayValue}</span>
-                </div>
-            `;
-        });
+        const currencyHTML = currencies.slice(0, 3).map(cur => {
+            const curSymbol = cur === 'USD' ? '$' : '';
+            const value = isBalancesHidden ? '••••••' : `${curSymbol}${Number(acc.currencies[cur]).toLocaleString()}`;
+            return `<div class="flex justify-between items-center border-b border-slate-700/50 py-1.5 last:border-0">
+                <span class="text-xs text-slate-400 font-medium">${cur}</span>
+                <span class="font-mono text-sm font-bold text-white">${value}</span>
+            </div>`;
+        }).join('');
+
         grid.innerHTML += `
-            <div class="bg-slate-800 rounded-xl border border-slate-700 p-4 shadow-sm card-item" data-account-label="${acc.label.toLowerCase()}">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="font-semibold text-emerald-400 text-sm tracking-wide">${acc.label}</h3>
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <div class="card-item" data-account-label="${acc.label.toLowerCase()}">
+                <div class="wallet-top">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="wallet-icon"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="min-w-0">
+                            <h3 class="font-bold text-emerald-400 text-sm tracking-wide truncate">${acc.label}</h3>
+                            <span class="text-[10px] text-slate-500">${primaryCurrency}</span>
+                        </div>
+                    </div>
+                    <button class="wallet-eye" onclick="toggleVisibility()" title="${eyeLabel}" aria-label="${eyeLabel}">
+                        <i class="fa-solid ${isBalancesHidden ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                    </button>
                 </div>
-                <div class="space-y-0.5">${currencyHTML}</div>
+                <div class="mb-2">
+                    <div class="wallet-balance-label">${balanceLabel}</div>
+                    <div class="wallet-balance">${displayValue}</div>
+                </div>
+                <div class="space-y-0">${currencyHTML}</div>
             </div>
         `;
     });
@@ -529,19 +572,22 @@ function handleRepayLoan(e) {
 }
 
 function deleteLoan(loanId) {
-    if (!confirm("Are you sure wanto delete loans?")) return;
+    const message = currentLang === 'en'
+        ? 'Are you sure you want to delete this loan?'
+        : 'Ma hubtaa inaad rabto inaad tirtirto amaahdan?';
+    if (!confirm(message)) return;
     (async () => {
         await sb.from('fh_loans').delete().eq('id', loanId);
         await loadAllData();
         syncDataUX();
-        alert("Loan deleted successful!");
+        alert(currentLang === 'en' ? 'Loan deleted successfully!' : 'Amaahda si guul leh ayaa loo tirtiray!');
     })();
 }
 
 function renderActiveLoansSelectors() {
     const repaySelect = document.getElementById('repayLoanSelect');
     if (repaySelect) {
-        repaySelect.innerHTML = '<option value="">[--Select--]</option>';
+        repaySelect.innerHTML = `<option value="">[--${currentLang === 'en' ? 'Select' : 'Dooro'}--]</option>`;
         loans.forEach(l => {
             if (l.status === 'Active') {
                 let option = document.createElement('option');
@@ -556,11 +602,11 @@ function renderActiveLoansSelectors() {
     if (!tbody) return;
     tbody.innerHTML = '';
     if (loans.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">Ma jirto amaah.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No loans found.' : 'Ma jirto amaah.'}</td></tr>`;
         return;
     }
     loans.forEach(l => {
-        let statusBadge = l.status === 'Active' ? `<span class="text-yellow-400">Active</span>` : `<span class="text-emerald-400">Paid</span>`;
+        let statusBadge = l.status === 'Active' ? `<span class="text-yellow-400">${currentLang === 'en' ? 'Active' : 'Firfircoon'}</span>` : `<span class="text-emerald-400">${currentLang === 'en' ? 'Paid' : 'La bixiyay'}</span>`;
 
         let dispOriginal = isBalancesHidden ? '•••••' : l.originalAmount;
         let dispRemaining = isBalancesHidden ? '•••••' : l.remainingAmount;
@@ -626,12 +672,14 @@ function renderReports() {
     tbody.innerHTML = '';
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Ma jiraan transactions.</td></tr>`;
-        document.getElementById('transactionCount').textContent = '0 transactions';
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No transactions found.' : 'Ma jiraan dhaqdhaqaaqyo.'}</td></tr>`;
+        document.getElementById('transactionCount').textContent = currentLang === 'en' ? '0 transactions' : '0 dhaqdhaqaaq';
         return;
     }
 
-    document.getElementById('transactionCount').textContent = `${filtered.length} transactions`;
+    document.getElementById('transactionCount').textContent = currentLang === 'en'
+        ? `${filtered.length} transactions`
+        : `${filtered.length} dhaqdhaqaaq`;
 
     filtered.forEach((t, index) => {
         const typeLabels = {
@@ -669,12 +717,15 @@ function clearReportFilters() {
 }
 
 function clearTransactions() {
-    if (!confirm("Are you sure wanto delete ALL Transections? this action can be undone!")) return;
+    const message = currentLang === 'en'
+        ? 'Are you sure you want to delete ALL transactions? This action cannot be undone.'
+        : 'Ma hubtaa inaad rabto inaad tirtirto DHAMMAAN dhaqdhaqaaqyada? Tallaabadan lama soo celin karo.';
+    if (!confirm(message)) return;
     (async () => {
         await sb.from('fh_transactions').delete().eq('user_id', currentUser.id);
         await loadAllData();
         renderReports();
-        alert("Deleted ALL transactions successful!");
+        alert(currentLang === 'en' ? "All transactions deleted successfully!" : "Dhammaan dhaqdhaqaaqyada waa la tirtiray!");
     })();
 }
 
@@ -730,7 +781,10 @@ function saveProfile() {
 }
 
 function resetAllData() {
-    if (!confirm("Are you sure wanto delete ALL the data? this action can be undone!")) return;
+    const message = currentLang === 'en'
+        ? 'Are you sure you want to delete ALL data? This action cannot be undone.'
+        : 'Ma hubtaa inaad rabto inaad tirtirto DHAMMAAN xogta? Tallaabadan lama soo celin karo.';
+    if (!confirm(message)) return;
     (async () => {
         await sb.from('fh_transactions').delete().eq('user_id', currentUser.id);
         await sb.from('fh_loans').delete().eq('user_id', currentUser.id);
@@ -741,17 +795,20 @@ function resetAllData() {
         }
         await loadAllData();
         syncDataUX();
-        alert(" Deleted ALL the data successful!");
+        alert(currentLang === 'en' ? "All data deleted successfully!" : "Dhammaan xogta waa la tirtiray!");
     })();
 }
 
 function clearLoans() {
-    if (!confirm(" Are you sure wanto ALL the loans? this action can be undone!")) return;
+    const message = currentLang === 'en'
+        ? 'Are you sure you want to delete ALL loans? This action cannot be undone.'
+        : 'Ma hubtaa inaad rabto inaad tirtirto DHAMMAAN amaahaha? Tallaabadan lama soo celin karo.';
+    if (!confirm(message)) return;
     (async () => {
         await sb.from('fh_loans').delete().eq('user_id', currentUser.id);
         await loadAllData();
         syncDataUX();
-        alert(" Delete ALL the loans successful!");
+        alert(currentLang === 'en' ? "All loans deleted successfully!" : "Dhammaan amaahaha waa la tirtiray!");
     })();
 }
 
@@ -767,10 +824,15 @@ function setLanguage(lang, triggerAnimation = true) {
         if (langBtnSo) {
             langBtnSo.className = lang === 'so' ? 'flex-1 py-2 px-4 rounded-lg bg-emerald-600 text-white text-xs border border-emerald-500' : 'flex-1 py-2 px-4 rounded-lg bg-slate-900 text-slate-400 text-xs border border-slate-700';
         }
+        document.documentElement.lang = lang;
         document.querySelectorAll('[data-lang-en]').forEach(el => {
             el.innerText = lang === 'en' ? el.getAttribute('data-lang-en') : el.getAttribute('data-lang-so');
         });
+        document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+            el.placeholder = lang === 'en' ? el.getAttribute('data-placeholder-en') : el.getAttribute('data-placeholder-so');
+        });
         updateClockAndGreeting();
+        renderDashboard();
         renderReports();
     };
     if (triggerAnimation) triggerLoadingAnimation(applyLang);

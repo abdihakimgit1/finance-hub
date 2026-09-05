@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finance wallet system</title>
+    <title data-lang-en="Finance Wallet System" data-lang-so="Nidaamka Finance Wallet">Finance Wallet System</title>
     <link rel="icon" href="icon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.csls">
+    <link rel="stylesheet" href="style.css">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -399,13 +399,11 @@
                 <i class="fa-solid fa-wallet text-3xl"></i>
             </div>
 
-            <h2 class="text-3xl font-bold mt-4" style="color: var(--primary);">
-                Finance wallets
-            </h2>
+            <h2 class="text-3xl font-bold mt-4" style="color: var(--primary);" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets">Finance Wallets</h2>
 
             <p class="text-slate-400 text-sm mt-2 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i>
-                Log in to access and manage your accounts.
+                <span data-lang-en="Log in to access and manage your accounts." data-lang-so="Gal si aad u maamusho akoonnadaada.">Log in to access and manage your accounts.</span>
             </p>
 
         </div>
@@ -416,7 +414,7 @@
             <div>
                 <label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
                     <i class="fa-solid fa-user" style="color: var(--primary);"></i>
-                    Username
+                    <span data-lang-en="Username" data-lang-so="Magaca isticmaalaha">Username</span>
                 </label>
                 <div class="relative">
                     <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
@@ -432,7 +430,7 @@
             <div>
                 <label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
                     <i class="fa-solid fa-lock" style="color: var(--primary);"></i>
-                    Password
+                    <span data-lang-en="Password" data-lang-so="Furaha sirta ah">Password</span>
                 </label>
                 <div class="relative">
                     <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
@@ -440,19 +438,24 @@
                         type="password"
                         id="loginPass"
                         placeholder="Enter your key"
+                        data-placeholder-en="Enter your key"
+                        data-placeholder-so="Geli furahaaga sirta ah"
                         required
-                        class="input-field pl-12">
+                        class="input-field pl-12 pr-12">
+                    <button type="button" onclick="toggleLoginPassword()" id="loginPassToggle" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-400" aria-label="Show password">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
             <button type="submit" class="btn-primary w-full">
                 <i class="fa-solid fa-right-to-bracket"></i>
-                Login
+                <span data-lang-en="Login" data-lang-so="Gal">Login</span>
             </button>
 
             <p id="loginError" class="hidden flex items-center justify-center gap-2 text-red-400 text-sm">
                 <i class="fa-solid fa-circle-exclamation"></i>
-                Invalid username or password!
+                <span data-lang-en="Invalid username or password!" data-lang-so="Magaca isticmaalaha ama furaha sirta ah waa khalad!">Invalid username or password!</span>
             </p>
 
         </form>
@@ -460,11 +463,11 @@
         <div class="mt-8 pt-5 border-t border-slate-700/50 text-center">
             <p class="flex items-center justify-center gap-2 text-sm font-semibold" style="color: var(--primary);">
                 <i class="fa-solid fa-shield-halved"></i>
-                Fast & Secure system
+                <span data-lang-en="Fast & Secure System" data-lang-so="Nidaam Degdeg ah oo Ammaan ah">Fast &amp; Secure System</span>
             </p>
             <p class="mt-2 text-xs text-slate-500 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-lock" style="color: var(--primary); opacity: 0.5;"></i>
-                Your data is protected and encrypted.
+                <span data-lang-en="Your data is protected and encrypted." data-lang-so="Xogtaada waa la ilaaliyay oo la sirgaliyay.">Your data is protected and encrypted.</span>
             </p>
         </div>
     </div>
@@ -481,7 +484,7 @@
         <!-- Session Timeout Warning -->
         <div id="sessionWarning" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-2xl z-50 text-sm font-bold flex items-center gap-3" style="background: var(--primary); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            ⚠Waxaad ka maqnaan doontaa 1 daqiiqo gudahood! Fadlan dhaqdhaqaaq ku samee.
+            <span data-lang-en="⚠ You will be logged out in 1 minute. Please stay active." data-lang-so="⚠ Waxaad ka maqnaan doontaa 1 daqiiqo gudahood. Fadlan dhaqdhaqaaq samee.">⚠ Waxaad ka maqnaan doontaa 1 daqiiqo gudahood. Fadlan dhaqdhaqaaq samee.</span>
         </div>
 
         <div class="flex flex-col md:flex-row min-h-screen">
@@ -493,7 +496,7 @@
                         <div class="p-2.5 rounded-xl text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
                             <i class="fa-solid fa-wallet text-xl"></i>
                         </div>
-                        <span class="text-xl font-bold tracking-wider" style="color: var(--primary);">Finance Wallets</span>
+                        <span class="text-xl font-bold tracking-wider" style="color: var(--primary);" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets">Finance Wallets</span>
                     </div>
                     <nav class="space-y-1.5">
                         <button onclick="switchTab('dashboard')" class="sidebar-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-dashboard">
@@ -527,7 +530,7 @@
                     <p id="greetingText" class="italic text-slate-500"></p>
                     <button onclick="handleLogout()" class="mt-3 w-full text-xs border rounded-xl py-2 flex items-center justify-center gap-2 transition-all duration-300" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        Logout
+                        <span data-lang-en="Logout" data-lang-so="Ka bax">Logout</span>
                     </button>
                 </div>
             </aside>
@@ -536,7 +539,7 @@
             <main class="flex-1 p-4 md:p-8 overflow-y-auto" style="background: var(--page-bg);">
 
                 <!-- Profile Card -->
-                <div class="card mb-6" style="min-height: auto;">
+                <div class="card profile-card mb-6" style="min-height: auto;">
 
                     <div class="flex items-center justify-between">
 
@@ -554,7 +557,7 @@
                                     </h4>
                                     <p class="text-sm text-slate-400 flex items-center gap-2">
                                         <i class="fa-solid fa-hand-wave" style="color: var(--primary);"></i>
-                                        <span id="mGreetingText">Welcome back 👋</span>
+                                        <span id="mGreetingText" data-lang-en="Welcome back 👋" data-lang-so="Ku soo dhawoow 👋">Welcome back 👋</span>
                                     </p>
                                 </div>
                             </div>
@@ -573,7 +576,7 @@
                                 type="text"
                                 id="accountSearch"
                                 oninput="filterAccounts()"
-                                placeholder="Search accounts..."
+                                placeholder="Search accounts..." data-placeholder-en="Search accounts..." data-placeholder-so="Raadi akoonnada..."
                                 class="input-field pl-12">
                         </div>
                     </div>
@@ -588,11 +591,11 @@
                                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
                                     <i class="fa-solid fa-chart-line"></i>
                                 </div>
-                                <span>Dhaqdhaqaaqa Guud ee Lacagta</span>
+                                <span data-lang-en="Overall Money Activity" data-lang-so="Dhaqdhaqaaqa Guud ee Lacagta">Overall Money Activity</span>
                             </h2>
                             <span class="text-sm text-slate-400 flex items-center gap-2 px-4 py-2 rounded-xl" style="background: var(--primary-bg);">
                                 <i class="fa-solid fa-wallet" style="color: var(--primary);"></i>
-                                Finance Dashboard
+                                <span data-lang-en="Finance Dashboard" data-lang-so="Dashboard-ka Maaliyadda">Finance Dashboard</span>
                             </span>
                         </div>
                     </div>
@@ -604,7 +607,7 @@
                 <section id="view-deposit" class="space-y-4 hidden">
                     <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
                         <i class="fa-solid fa-arrow-down mr-2" style="color: var(--primary);"></i>
-                        Ku shub lacag
+                        <span data-lang-en="Deposit Money" data-lang-so="Ku shub lacag">Deposit Money</span>
                     </h2>
                     <div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
                         <form id="depositForm" onsubmit="handleDeposit(event)" class="space-y-5">
@@ -648,7 +651,7 @@
                 <section id="view-withdraw" class="space-y-4 hidden">
                     <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
                         <i class="fa-solid fa-arrow-up mr-2" style="color: var(--primary);"></i>
-                        La bax lacag
+                        <span data-lang-en="Withdraw Money" data-lang-so="La bax lacag">Withdraw Money</span>
                     </h2>
                     <div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
                         <form id="withdrawForm" onsubmit="handleWithdraw(event)" class="space-y-5">
@@ -692,7 +695,7 @@
                 <section id="view-loans" class="space-y-6 hidden">
                     <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
                         <i class="fa-solid fa-hand-holding-dollar mr-2" style="color: var(--primary);"></i>
-                        Nidaamka Amaahda iyo Soo Celinta
+                        <span data-lang-en="Loan & Repayment Management" data-lang-so="Nidaamka Amaahda iyo Soo Celinta">Loan &amp; Repayment Management</span>
                     </h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="card">
@@ -773,12 +776,12 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Qofka</th>
-                                        <th>Akoonka</th>
-                                        <th>Hore</th>
-                                        <th>Ku Hadhay</th>
-                                        <th>Xaaladda</th>
-                                        <th>Ficil</th>
+                                        <th data-lang-en="Borrower" data-lang-so="Qofka">Borrower</th>
+                                        <th data-lang-en="Account" data-lang-so="Akoonka">Account</th>
+                                        <th data-lang-en="Original" data-lang-so="Hore">Original</th>
+                                        <th data-lang-en="Remaining" data-lang-so="Ku Hadhay">Remaining</th>
+                                        <th data-lang-en="Status" data-lang-so="Xaaladda">Status</th>
+                                        <th data-lang-en="Action" data-lang-so="Ficil">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="loanTableBody"></tbody>
@@ -791,7 +794,7 @@
                 <section id="view-reports" class="space-y-6 hidden">
                     <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
                         <i class="fa-solid fa-chart-simple mr-2" style="color: var(--primary);"></i>
-                        Warbixinaha Dhaqdhaqaaqa
+                        <span data-lang-en="Transaction Reports" data-lang-so="Warbixinaha Dhaqdhaqaaqa">Transaction Reports</span>
                     </h2>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -897,7 +900,7 @@
                 <section id="view-settings" class="space-y-6 hidden">
                     <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
                         <i class="fa-solid fa-gear mr-2" style="color: var(--primary);"></i>
-                        System settings
+                        <span data-lang-en="System Settings" data-lang-so="Habaynta Nidaamka">System Settings</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="card">
@@ -909,34 +912,37 @@
                                 <div>
                                     <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
                                         <i class="fa-solid fa-user" style="color: var(--primary);"></i>
-                                        Full Name
+                                        <span data-lang-en="Full Name" data-lang-so="Magaca oo Dhamaystiran">Full Name</span>
                                     </label>
                                     <input type="text" id="settingsName" class="input-field">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
                                         <i class="fa-solid fa-briefcase" style="color: var(--primary);"></i>
-                                        User role
+                                        <span data-lang-en="User Role" data-lang-so="Doorka Isticmaalaha">User Role</span>
                                     </label>
                                     <input type="text" id="settingsRole" class="input-field">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
                                         <i class="fa-solid fa-lock" style="color: var(--primary);"></i>
-                                        Update password
+                                        <span data-lang-en="Update Password" data-lang-so="Cusboonaysii Furaha Sirta">Update Password</span>
                                     </label>
-                                    <input type="password" id="settingsNewPassword" placeholder="Not available" class="input-field" readonly>
+                                    <div class="relative">
+                                        <input type="password" id="settingsNewPassword" placeholder="New password" data-placeholder-en="New password" data-placeholder-so="Furaha cusub" class="input-field pr-12">
+                                        <button type="button" onclick="toggleSettingsPassword()" id="settingsPassToggle" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-400" aria-label="Show password"><i class="fa-solid fa-eye"></i></button>
+                                    </div>
                                 </div>
                                 <button onclick="saveProfile()" class="btn-primary w-full mt-auto">
                                     <i class="fa-solid fa-floppy-disk"></i>
-                                    Save info
+                                    <span data-lang-en="Save Info" data-lang-so="Kaydi Xogta">Save Info</span>
                                 </button>
                                 <div class="border-t border-slate-700/50 pt-4 mt-4">
                                     <button onclick="handleLogout()" class="btn-danger w-full">
                                         <i class="fa-solid fa-right-from-bracket"></i>
-                                        Logout
+                                        <span data-lang-en="Logout" data-lang-so="Ka bax">Logout</span>
                                     </button>
-                                    <p class="text-xs text-slate-500 mt-2 text-center">You will be logged out of the system.</p>
+                                    <p class="text-xs text-slate-500 mt-2 text-center"><span data-lang-en="You will be logged out of the system." data-lang-so="Waxaad ka bixi doontaa nidaamka.">You will be logged out of the system.</span></p>
                                 </div>
                             </div>
                         </div>
@@ -946,16 +952,16 @@
                                 <div>
                                     <h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
                                         <i class="fa-solid fa-language"></i>
-                                        System Language
+                                        <span data-lang-en="System Language" data-lang-so="Luqadda Nidaamka">System Language</span>
                                     </h3>
                                     <div class="grid grid-cols-2 gap-3">
                                         <button onclick="setLanguage('en')" id="lang-btn-en" class="btn-outline w-full">
                                             <i class="fa-solid fa-globe"></i>
-                                            English
+                                            <span data-lang-en="English" data-lang-so="English">English</span>
                                         </button>
                                         <button onclick="setLanguage('so')" id="lang-btn-so" class="btn-primary w-full">
                                             <i class="fa-solid fa-flag"></i>
-                                            Somali
+                                            <span data-lang-en="Somali" data-lang-so="Soomaali">Somali</span>
                                         </button>
                                     </div>
                                 </div>
@@ -964,19 +970,19 @@
                                 <div>
                                     <h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
                                         <i class="fa-solid fa-palette"></i>
-                                        Naqshadda Midabka
+                                        <span data-lang-en="Theme" data-lang-so="Muuqaalka">Theme</span>
                                     </h3>
                                     <div class="flex items-center justify-between rounded-2xl p-4 border" style="background: var(--primary-bg); border-color: rgba(51, 65, 85, 0.5);">
                                         <span class="flex items-center gap-2 text-slate-300">
                                             <i class="fa-solid fa-moon"></i>
-                                            Dark
+                                            <span data-lang-en="Dark" data-lang-so="Madow">Dark</span>
                                         </span>
                                         <div id="themeToggle" class="toggle-switch active cursor-pointer" onclick="toggleTheme()">
                                             <div class="toggle-knob"></div>
                                         </div>
                                         <span class="flex items-center gap-2 text-slate-300">
                                             <i class="fa-solid fa-sun" style="color: var(--primary);"></i>
-                                            Light
+                                            <span data-lang-en="Light" data-lang-so="Iftiin">Light</span>
                                         </span>
                                     </div>
                                 </div>
@@ -985,20 +991,20 @@
                                 <div class="border-t border-slate-700/50 pt-6">
                                     <h3 class="flex items-center gap-2 text-lg font-bold mb-4" style="color: #ef4444;">
                                         <i class="fa-solid fa-gear"></i>
-                                        Management
+                                        <span data-lang-en="Management" data-lang-so="Maamulka">Management</span>
                                     </h3>
                                     <div class="grid grid-cols-2 gap-3">
                                         <button onclick="resetAllData()" disabled class="btn-danger opacity-50 cursor-not-allowed">
                                             <i class="fa-solid fa-trash"></i>
-                                            Reset All
+                                            <span data-lang-en="Reset All" data-lang-so="Dib u celi dhammaan">Reset All</span>
                                         </button>
                                         <button onclick="clearLoans()" disabled class="btn-primary opacity-50 cursor-not-allowed">
                                             <i class="fa-solid fa-money-bill-wave"></i>
-                                            Clear Loans
+                                            <span data-lang-en="Clear Loans" data-lang-so="Nadiifi Amaahaha">Clear Loans</span>
                                         </button>
                                         <button onclick="clearTransactions()" disabled class="btn-primary opacity-50 cursor-not-allowed col-span-2">
                                             <i class="fa-solid fa-receipt"></i>
-                                            Clear Transactions
+                                            <span data-lang-en="Clear Transactions" data-lang-so="Nadiifi Dhaqdhaqaaqyada">Clear Transactions</span>
                                         </button>
                                     </div>
                                 </div>
