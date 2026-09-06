@@ -29,18 +29,9 @@ function resetSessionTimer() {
     sessionTimeout = setTimeout(() => {
         const warningEl3 = document.getElementById('sessionWarning');
         if (warningEl3) warningEl3.classList.add('hidden');
-        silentLogout();
-        alert(currentLang === 'en' ? 'Your session has expired due to inactivity. Please sign in again.' : "Fadhigaaga wuxuu ku dhacay dhaqdhaqaaq la'aan. Fadlan mar kale gal.");
+        handleLogout(true);
+        alert(currentLang === 'en' ? "Your session has expired due to inactivity. Please sign in again." : "Kulankaagu wuu dhacay sababo la xiriira maqnaansho. Fadlan mar kale gal.");
     }, SESSION_TIMEOUT);
-}
-
-function togglePasswordVisibility(inputId, iconId) {
-    const input = document.getElementById(inputId);
-    const icon = document.getElementById(iconId);
-    if (!input) return;
-    const showing = input.type === 'text';
-    input.type = showing ? 'password' : 'text';
-    if (icon) icon.className = showing ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
 }
 
 async function handleLogin(e) {
@@ -52,7 +43,7 @@ async function handleLogin(e) {
 
     if (!username || !password) {
         errorEl.classList.remove('hidden');
-        errorEl.textContent = currentLang === 'en' ? 'Please fill in all fields!' : 'Fadlan buuxi dhammaan meelaha!';
+        errorEl.textContent = 'Fadlan buuxi dhammaan meelaha!';
         return;
     }
 
@@ -65,7 +56,7 @@ async function handleLogin(e) {
 
     if (error || !data.session) {
         errorEl.classList.remove('hidden');
-        errorEl.textContent = currentLang === 'en' ? 'Invalid username or password!' : 'Username ama Password khalad!';
+        errorEl.textContent = 'Username ama Password khalad!';
         return;
     }
 
@@ -73,22 +64,13 @@ async function handleLogin(e) {
     await showApp();
 }
 
-async function silentLogout() {
-    await sb.auth.signOut();
-    currentUser = null;
-    clearTimeout(sessionTimeout);
-    clearTimeout(warningTimeout);
-    const warningEl = document.getElementById('sessionWarning');
-    if (warningEl) warningEl.classList.add('hidden');
-    const appContainer = document.getElementById('appContainer');
-    const loginPage = document.getElementById('loginPage');
-    if (appContainer) appContainer.classList.add('hidden');
-    if (loginPage) loginPage.classList.remove('hidden');
-}
-
-async function handleLogout() {
-    const message = currentLang === 'en' ? 'Are you sure want to log out?' : 'Ma hubtaa inaad rabto inaad ka baxdo?';
-    if (!confirm(message)) return;
+async function handleLogout(force = false) {
+    if (!force) {
+        const message = currentLang === 'en'
+            ? 'Are you sure you want to log out?'
+            : 'Ma hubtaa inaad rabto inaad ka baxdo nidaamka?';
+        if (!confirm(message)) return;
+    }
     await sb.auth.signOut();
     currentUser = null;
     clearTimeout(sessionTimeout);
@@ -101,6 +83,19 @@ async function handleLogout() {
     if (loginPage) loginPage.classList.remove('hidden');
     const loginPass = document.getElementById('loginPass');
     if (loginPass) loginPass.value = '';
+}
+
+function confirmLogout() {
+    return handleLogout(false);
+}
+
+function togglePasswordVisibility(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (!input || !icon) return;
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    icon.className = showing ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
 }
 
 async function showApp() {
@@ -122,6 +117,7 @@ let profile = { name: "User", role: "System Administrator" };
 let currentLang = 'so';
 let currentTheme = 'dark';
 let isBalancesHidden = false;
+const hiddenWallets = new Set();
 
 async function loadAllData() {
     const [accRes, loanRes, txRes, profRes] = await Promise.all([
@@ -247,18 +243,10 @@ async function toggleVisibility() {
 function updateEyeIcon() {
     const btn = document.getElementById('hideBtn');
     if (!btn) return;
-    if (isBalancesHidden) {
-        btn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-            </svg>`;
-    } else {
-        btn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 hover:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>`;
-    }
+    btn.innerHTML = `<i id="eyeIcon" class="fa-solid ${isBalancesHidden ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+    btn.setAttribute('aria-label', currentLang === 'en'
+        ? (isBalancesHidden ? 'Show balances' : 'Hide balances')
+        : (isBalancesHidden ? 'Muuji haraaga' : 'Qari haraaga'));
 }
 
 function switchTab(tabId) {
@@ -292,28 +280,43 @@ function triggerLoadingAnimation(callback) {
 
 function renderDashboard() {
     const grid = document.getElementById('accountsGrid');
+    if (!grid) return;
     grid.innerHTML = '';
+
     Object.keys(accounts).forEach(key => {
         const acc = accounts[key];
+        const walletHidden = isBalancesHidden || hiddenWallets.has(key);
         let currencyHTML = '';
+
         Object.keys(acc.currencies).forEach(cur => {
-            let symbol = cur === 'USD' ? '$' : ' ';
-            let displayValue = isBalancesHidden ? '••••••' : `${symbol}${Number(acc.currencies[cur]).toLocaleString()}`;
+            const symbol = cur === 'USD' ? '$' : '';
+            const displayValue = walletHidden
+                ? '••••••'
+                : `${symbol}${Number(acc.currencies[cur]).toLocaleString()}`;
 
             currencyHTML += `
-                <div class="flex justify-between items-center border-b border-slate-700/50 py-2 last:border-0">
+                <div class="wallet-row flex justify-between items-center border-b border-slate-700/50 py-2 last:border-0">
                     <span class="text-xs text-slate-400 font-medium">${cur}</span>
-                    <span class="font-mono text-white text-md font-bold">${displayValue}</span>
+                    <span class="wallet-value font-mono text-white text-md font-bold">${displayValue}</span>
                 </div>
             `;
         });
+
+        const eyeClass = walletHidden ? 'fa-eye-slash' : 'fa-eye';
         grid.innerHTML += `
-            <div class="account-card card-item" data-account-label="${acc.label.toLowerCase()}">
-                <div class="account-card-head mb-2">
+            <div class="account-card wallet-card rounded-xl border p-4 shadow-sm card-item"
+                 data-account-label="${acc.label.toLowerCase()}">
+                <div class="flex items-center justify-between mb-2">
                     <h3 class="font-semibold text-emerald-400 text-sm tracking-wide">${acc.label}</h3>
-                    <button type="button" class="account-eye-btn" onclick="toggleVisibility()" aria-label="${currentLang === 'en' ? 'Show or hide balance' : 'Muuji ama qari balance-ka'}">
-                        <i class="fa-solid ${isBalancesHidden ? 'fa-eye-slash' : 'fa-eye'}"></i>
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                        <button type="button"
+                                onclick="toggleWalletVisibility('${key}')"
+                                class="wallet-eye text-slate-400 hover:text-emerald-400 p-1"
+                                aria-label="${currentLang === 'en' ? 'Show or hide balance' : 'Muuji ama qari haraaga'}">
+                            <i class="fa-solid ${eyeClass}"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="space-y-0.5">${currencyHTML}</div>
             </div>
@@ -321,6 +324,11 @@ function renderDashboard() {
     });
 }
 
+function toggleWalletVisibility(key) {
+    if (hiddenWallets.has(key)) hiddenWallets.delete(key);
+    else hiddenWallets.add(key);
+    renderDashboard();
+}
 function filterAccounts() {
     const query = document.getElementById('accountSearch').value.toLowerCase();
     document.querySelectorAll('.card-item').forEach(card => {
@@ -555,7 +563,7 @@ function handleRepayLoan(e) {
 }
 
 function deleteLoan(loanId) {
-    if (!confirm("Are you sure wanto delete loans?")) return;
+    if (!confirm(currentLang === "en" ? "Are you sure you want to delete loans? This action cannot be undone." : "Ma hubtaa inaad rabto inaad tirtirto amaahaha? Ficilkan lama celin karo.")) return;
     (async () => {
         await sb.from('fh_loans').delete().eq('id', loanId);
         await loadAllData();
@@ -567,7 +575,7 @@ function deleteLoan(loanId) {
 function renderActiveLoansSelectors() {
     const repaySelect = document.getElementById('repayLoanSelect');
     if (repaySelect) {
-        repaySelect.innerHTML = '<option value="">[--Select--]</option>';
+        repaySelect.innerHTML = `<option value="">[--${currentLang === 'en' ? 'Select' : 'Dooro'}--]</option>`;
         loans.forEach(l => {
             if (l.status === 'Active') {
                 let option = document.createElement('option');
@@ -586,7 +594,7 @@ function renderActiveLoansSelectors() {
         return;
     }
     loans.forEach(l => {
-        let statusBadge = l.status === 'Active' ? `<span class="text-yellow-400">Active</span>` : `<span class="text-emerald-400">Paid</span>`;
+        let statusBadge = l.status === 'Active' ? `<span class="text-yellow-400">${currentLang === 'en' ? 'Active' : 'Taagan'}</span>` : `<span class="text-emerald-400">${currentLang === 'en' ? 'Paid' : 'La bixiyay'}</span>`;
 
         let dispOriginal = isBalancesHidden ? '•••••' : l.originalAmount;
         let dispRemaining = isBalancesHidden ? '•••••' : l.remainingAmount;
@@ -652,7 +660,7 @@ function renderReports() {
     tbody.innerHTML = '';
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">${currentLang === 'en' ? 'No transactions found.' : 'Ma jiraan wax dhaqdhaqaaq ah.'}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">Ma jiraan transactions.</td></tr>`;
         document.getElementById('transactionCount').textContent = currentLang === 'en' ? '0 transactions' : '0 dhaqdhaqaaq';
         return;
     }
@@ -695,12 +703,12 @@ function clearReportFilters() {
 }
 
 function clearTransactions() {
-    if (!confirm(currentLang === 'en' ? 'Are you sure you want to delete ALL transactions? This action cannot be undone.' : 'Ma hubtaa inaad tirtirayso DHAMMAAN dhaqdhaqaaqyada? Ficilkan lama soo celin karo.')) return;
+    if (!confirm(currentLang === "en" ? "Are you sure you want to delete ALL transactions? This action cannot be undone." : "Ma hubtaa inaad rabto inaad tirtirto dhammaan dhaqdhaqaaqyada? Ficilkan lama celin karo.")) return;
     (async () => {
         await sb.from('fh_transactions').delete().eq('user_id', currentUser.id);
         await loadAllData();
         renderReports();
-        alert(currentLang === 'en' ? 'All transactions deleted successfully!' : 'Dhammaan dhaqdhaqaaqyada si guul leh ayaa loo tirtiray!');
+        alert("Deleted ALL transactions successful!");
     })();
 }
 
@@ -756,7 +764,7 @@ function saveProfile() {
 }
 
 function resetAllData() {
-    if (!confirm(currentLang === 'en' ? 'Are you sure you want to delete ALL data? This action cannot be undone.' : 'Ma hubtaa inaad tirtirayso DHAMMAAN xogta? Ficilkan lama soo celin karo.')) return;
+    if (!confirm(currentLang === "en" ? "Are you sure you want to delete ALL data? This action cannot be undone." : "Ma hubtaa inaad rabto inaad tirtirto dhammaan xogta? Ficilkan lama celin karo.")) return;
     (async () => {
         await sb.from('fh_transactions').delete().eq('user_id', currentUser.id);
         await sb.from('fh_loans').delete().eq('user_id', currentUser.id);
@@ -767,49 +775,174 @@ function resetAllData() {
         }
         await loadAllData();
         syncDataUX();
-        alert(currentLang === 'en' ? 'All data deleted successfully!' : 'Dhammaan xogta si guul leh ayaa loo tirtiray!');
+        alert(" Deleted ALL the data successful!");
     })();
 }
 
 function clearLoans() {
-    if (!confirm(currentLang === 'en' ? 'Are you sure you want to delete ALL loans? This action cannot be undone.' : 'Ma hubtaa inaad tirtirayso DHAMMAAN amaahda? Ficilkan lama soo celin karo.')) return;
+    if (!confirm(" Are you sure wanto ALL the loans? this action can be undone!")) return;
     (async () => {
         await sb.from('fh_loans').delete().eq('user_id', currentUser.id);
         await loadAllData();
         syncDataUX();
-        alert(currentLang === 'en' ? 'All loans deleted successfully!' : 'Dhammaan amaahda si guul leh ayaa loo tirtiray!');
+        alert(" Delete ALL the loans successful!");
     })();
+}
+
+const UI_TRANSLATIONS = {
+    "Log in to access and manage your accounts.": ["Log in to access and manage your accounts.", "Gal si aad u hesho oo u maamusho akoonnadaada."],
+    "Username": ["Username", "Magaca isticmaalaha"],
+    "Enter your key": ["Enter your password", "Geli furaha sirta"],
+    "Login": ["Login", "Gal"],
+    "Invalid username or password!": ["Invalid username or password!", "Magaca isticmaalaha ama furaha sirta waa khalad!"],
+    "Fast & Secure system": ["Fast & Secure system", "Nidaam degdeg ah oo ammaan ah"],
+    "Your data is protected and encrypted.": ["Your data is protected and encrypted.", "Xogtaada waa la ilaaliyay oo waa la sirgoynayaa."],
+    "Search accounts...": ["Search accounts...", "Raadi akoonnada..."],
+    "Finance Dashboard": ["Finance Dashboard", "Dashboard-ka Maaliyadda"],
+    "System settings": ["System Settings", "Habaynta nidaamka"],
+    "Profile information": ["Profile information", "Macluumaadka profile-ka"],
+    "Full Name": ["Full Name", "Magaca oo buuxa"],
+    "User role": ["User role", "Doorka isticmaalaha"],
+    "Update password": ["Update password", "Cusboonaysii furaha sirta"],
+    "Not available": ["Not available", "Lama heli karo"],
+    "Save info": ["Save information", "Kaydi macluumaadka"],
+    "You will be logged out of the system.": ["You will be logged out of the system.", "Waxaad ka bixi doontaa nidaamka."],
+    "System Language": ["System Language", "Luqadda nidaamka"],
+    "Color Theme": ["Color Theme", "Naqshadda midabka"],
+    "Naqshadda Midabka": ["Color Theme", "Naqshadda midabka"],
+    "Management": ["Management", "Maamulka"],
+    "Reset All": ["Reset All", "Dib u deji dhammaan"],
+    "Clear Loans": ["Clear Loans", "Tirtir amaahaha"],
+    "Clear Transactions": ["Clear Transactions", "Tirtir dhammaan dhaqdhaqaaqyada"],
+    "Dark": ["Dark", "Madow"],
+    "Light": ["Light", "Iftiin"],
+    "Dhaqdhaqaaqa Guud ee Lacagta": ["Overall Money Activity", "Dhaqdhaqaaqa Guud ee Lacagta"],
+    "Ku shub lacag": ["Deposit Money", "Ku shub lacag"],
+    "La bax lacag": ["Withdraw Money", "La bax lacag"],
+    "Nidaamka Amaahda iyo Soo Celinta": ["Loan & Repayment Management", "Nidaamka Amaahda iyo Soo Celinta"],
+    "Warbixinaha Dhaqdhaqaaqa": ["Activity Reports", "Warbixinaha Dhaqdhaqaaqa"],
+    "Ma jiraan transactions.": ["No transactions found.", "Ma jiraan dhaqdhaqaaqyo."],
+    "Ma jirto amaah.": ["No loans found.", "Ma jirto amaah."],
+    "Qofka": ["Person", "Qofka"],
+    "Akoonka": ["Account", "Akoonka"],
+    "Hore": ["Original", "Hore"],
+    "Ku Hadhay": ["Remaining", "Ku Hadhay"],
+    "Xaaladda": ["Status", "Xaaladda"],
+    "Ficil": ["Action", "Ficil"],
+    "Password": ["Password", "Furaha sirta"],
+    "Language": ["Language", "Luqad"],
+    "Theme": ["Theme", "Muuqaalka"],
+    "Logo": ["Logo", "Astaanta"],
+    "Loading Overlay": ["Loading", "Soo dejinaya"],
+    "Session Timeout Warning": ["Session timeout warning", "Digniinta waqtiga kulanka"],
+    "DASHBOARD": ["DASHBOARD", "DASHBOARD"],
+    "DEPOSIT": ["DEPOSIT", "KU SHUBID"],
+    "WITHDRAW": ["WITHDRAW", "KA BIXID"],
+    "LOANS": ["LOANS", "AMAAH"],
+    "REPORTS": ["REPORTS", "WARBIXINNO"],
+    "SETTINGS": ["SETTINGS", "HABAYN"],
+    "MOBILE NAV": ["MOBILE NAVIGATION", "NAVIGATION-KA MOOBAYLKA"],
+    "Select accounts": ["Select Account", "Dooro akoonka"],
+    "Currency type": ["Currency", "Nooca lacagta"],
+    "Lacagta": ["Amount", "Cadadka lacagta"],
+    "Faahfaahin": ["Description", "Faahfaahin"],
+    "Deposit to Balance": ["Deposit to Balance", "Ku shub haraaga"],
+    "Dooro Akoonka": ["Select Account", "Dooro akoonka"],
+    "Nooca Lacagta": ["Currency", "Nooca lacagta"],
+    "Cadadka Lacagta": ["Amount", "Cadadka lacagta"],
+    "Ka bax": ["Withdraw", "Ka bax"],
+    "Bixi Amaah Cusub": ["Issue New Loan", "Bixi amaah cusub"],
+    "Magaca Qofka Qaadanaya": ["Borrower Name", "Magaca qofka qaadanaya"],
+    "Bixi Amaahda": ["Process Loan", "Bixi amaahda"],
+    "Soo Celi Amaahda": ["Repay Active Loan", "Soo celi amaahda"],
+    "Dooro Amaahda": ["Select Active Loan", "Dooro amaahda taagan"],
+    "Cadadka Soo Celinta": ["Repayment Amount", "Cadadka soo celinta"],
+    "Hagaaji soo celinta": ["Submit Repayment", "Gudbi soo celinta"],
+    "Diiwaanka Amaahda Tagan": ["Active Loans Ledger", "Diiwaanka amaahaha taagan"],
+    "Ku Shubashada": ["Total Deposits", "Wadarta ku shubashada"],
+    "Ka Bixinta": ["Total Withdrawals", "Wadarta ka bixista"],
+    "Wadarta Amaahda": ["Total Loans Given", "Wadarta amaahaha la bixiyay"],
+    "Shaandheey": ["Filter", "Shaandhee"],
+    "Dhammaan": ["All Transactions", "Dhammaan dhaqdhaqaaqyada"],
+    "Ku Shubo": ["Deposit", "Ku shub"],
+    "Ka Bax": ["Withdrawal", "Ka bax"],
+    "Amaah": ["Loan", "Amaah"],
+    "Soo Celin": ["Repayment", "Soo celin"],
+    "Muddada": ["Date Range", "Muddada"],
+    "Ilaa": ["To", "Ilaa"],
+    "Kudabaq": ["Apply Filter", "Kudabaq"],
+    "Nadiifi": ["Clear", "Nadiifi"],
+    "Taariikhda Dhaqdhaqaaqa": ["Transaction History", "Taariikhda dhaqdhaqaaqa"],
+    "Taariikh": ["Date", "Taariikh"],
+    "Nooca": ["Type", "Nooca"],
+    "Qadarka": ["Amount", "Qadarka"],
+    "Guri": ["Home", "Guri"],
+    "Kushubo": ["Deposit", "Ku shub"],
+    "Warbixin": ["Reports", "Warbixin"],
+    "Welcome back 👋": ["Welcome back 👋", "Soo dhawoow 👋"],
+    "Finance Wallets": ["Finance Wallets", "Boorsooyinka Maaliyadda"]
+};
+
+function applyCompleteLanguage() {
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('[data-lang-en]').forEach(el => {
+        el.innerText = currentLang === 'en'
+            ? el.getAttribute('data-lang-en')
+            : el.getAttribute('data-lang-so');
+    });
+
+    // Translate remaining static text nodes without touching account/user data.
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+        const value = node.nodeValue.trim();
+        if (!value || !UI_TRANSLATIONS[value]) return;
+        const pair = UI_TRANSLATIONS[value];
+        node.nodeValue = node.nodeValue.replace(value, currentLang === 'en' ? pair[0] : pair[1]);
+    });
+
+    document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+        el.placeholder = currentLang === 'en'
+            ? el.getAttribute('data-placeholder-en')
+            : el.getAttribute('data-placeholder-so');
+    });
+
+    const search = document.getElementById('accountSearch');
+    if (search) search.placeholder = currentLang === 'en' ? 'Search accounts...' : 'Raadi akoonnada...';
+
+    const count = document.getElementById('transactionCount');
+    if (count && !count.textContent.includes('0')) {
+        const n = parseInt(count.textContent, 10) || 0;
+        count.textContent = currentLang === 'en' ? `${n} transactions` : `${n} dhaqdhaqaaq`;
+    }
+
+    updateClockAndGreeting();
+    updateEyeIcon();
+    renderDashboard();
+    renderActiveLoansSelectors();
+    renderReports();
 }
 
 function setLanguage(lang, triggerAnimation = true) {
     const applyLang = async () => {
         currentLang = lang;
         await saveProfileFields({ lang });
+
         const langBtnEn = document.getElementById('lang-btn-en');
         const langBtnSo = document.getElementById('lang-btn-so');
-        if (langBtnEn) {
-            langBtnEn.className = lang === 'en' ? 'flex-1 py-2 px-4 rounded-lg bg-emerald-600 text-white text-xs border border-emerald-500' : 'flex-1 py-2 px-4 rounded-lg bg-slate-900 text-slate-400 text-xs border border-slate-700';
-        }
-        if (langBtnSo) {
-            langBtnSo.className = lang === 'so' ? 'flex-1 py-2 px-4 rounded-lg bg-emerald-600 text-white text-xs border border-emerald-500' : 'flex-1 py-2 px-4 rounded-lg bg-slate-900 text-slate-400 text-xs border border-slate-700';
-        }
-        document.querySelectorAll('[data-lang-en]').forEach(el => {
-            el.innerText = lang === 'en' ? el.getAttribute('data-lang-en') : el.getAttribute('data-lang-so');
-        });
-        document.querySelectorAll('[data-placeholder-en]').forEach(el => {
-            el.placeholder = lang === 'en' ? el.getAttribute('data-placeholder-en') : el.getAttribute('data-placeholder-so');
-        });
-        document.title = lang === 'en' ? 'Finance Wallets' : 'Finance Wallets';
-        const warning = document.getElementById('sessionWarning');
-        if (warning) warning.lastChild.textContent = lang === 'en' ? ' Your session will expire in 1 minute. Please interact with the system.' : ' Fadhigaaga wuxuu dhacayaa 1 daqiiqo kadib. Fadlan la falgal nidaamka.';
-        updateClockAndGreeting();
-        renderDashboard();
-        renderReports();
+        if (langBtnEn) langBtnEn.className = lang === 'en'
+            ? 'flex-1 py-2 px-4 rounded-lg bg-emerald-600 text-white text-xs border border-emerald-500'
+            : 'flex-1 py-2 px-4 rounded-lg bg-slate-900 text-slate-400 text-xs border border-slate-700';
+        if (langBtnSo) langBtnSo.className = lang === 'so'
+            ? 'flex-1 py-2 px-4 rounded-lg bg-emerald-600 text-white text-xs border border-emerald-500'
+            : 'flex-1 py-2 px-4 rounded-lg bg-slate-900 text-slate-400 text-xs border border-slate-700';
+
+        applyCompleteLanguage();
     };
     if (triggerAnimation) triggerLoadingAnimation(applyLang);
     else applyLang();
 }
-
 function syncDataUX() {
     renderDashboard();
     populateFormOptions();

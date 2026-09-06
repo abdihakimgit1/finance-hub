@@ -425,65 +425,86 @@ body.theme-light .input-field {
 }
 
 
-/* ===== FinanceHub precision updates ===== */
+/* =========================================================
+   Finance Wallets UI update
+   Desktop profile/greeting card: compact and balanced
+   Wallet cards: same visual family as the balance card
+   ========================================================= */
 .profile-header-card {
-    height: auto !important;
     min-height: 0 !important;
-    flex: none !important;
+    padding: 18px 22px !important;
+}
+.profile-header-card .profile-search {
+    margin-top: 14px !important;
+}
+@media (min-width: 1025px) {
+    .profile-header-card {
+        padding: 16px 22px !important;
+    }
+    .profile-header-card .profile-search {
+        margin-top: 12px !important;
+    }
 }
 
-/* Fixed tables: rows scroll inside the table area, headers stay visible. */
+/* Wallet cards retain their contents but match the main balance card style. */
+.account-card.wallet-card {
+    height: auto;
+    min-height: 180px;
+    background: var(--surface) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+.theme-light .account-card.wallet-card {
+    background: rgba(255,255,255,.96) !important;
+}
+.wallet-card .wallet-row {
+    border-bottom-color: var(--border-color) !important;
+}
+.wallet-card .wallet-value {
+    color: var(--text-main) !important;
+}
+
+/* Consistent theme colors for Tailwind utility text/classes used by the app. */
+body.theme-dark {
+    --text-main: #f1f5f9;
+}
+body.theme-light {
+    --text-main: #1e293b;
+}
+.theme-light .text-white { color: #1e293b !important; }
+.theme-light .text-slate-300 { color: #475569 !important; }
+.theme-light .text-slate-400 { color: #64748b !important; }
+.theme-light .border-slate-700\/50,
+.theme-light .border-slate-700\/40 { border-color: rgba(203,213,225,.7) !important; }
+.theme-light .bg-slate-800,
+.theme-light .bg-slate-900 { background-color: rgba(255,255,255,.96) !important; }
+.theme-dark .bg-white,
+.theme-dark .bg-slate-50,
+.theme-dark .bg-gray-50 { background-color: #1e293b !important; color: #f1f5f9 !important; }
+
+.password-toggle {
+    line-height: 1;
+    z-index: 2;
+}
+
+/* Fixed-height transaction/loan tables with vertical + horizontal scrolling. */
 .table-container {
-    height: 420px !important;
-    max-height: 420px !important;
-    min-height: 0 !important;
     overflow: auto !important;
-    -webkit-overflow-scrolling: touch;
+    max-height: 420px !important;
+    min-height: 0;
+    scrollbar-gutter: stable;
 }
 .table-container table {
     min-width: 760px;
-    width: max-content;
-    min-height: 100%;
 }
 .table-container thead th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 5 !important;
-    background: #0f172a !important;
+    position: sticky;
+    top: 0;
+    z-index: 5;
 }
-.theme-light .table-container thead th {
-    background: #f8fafc !important;
-}
-
-/* Wallet cards keep their existing data/content but visually match the top card. */
-#accountsGrid .account-card {
-    background: var(--surface) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 16px !important;
-    min-height: 180px;
-    height: 180px;
-    padding: 20px;
-    box-shadow: 0 8px 24px rgba(2, 6, 23, .10);
-}
-#accountsGrid .account-card:hover { border-color: var(--primary) !important; }
-.account-card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.account-eye-btn { width:36px; height:36px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; color:#94a3b8; background:var(--primary-bg); }
-.account-eye-btn:hover { color:var(--primary); background:var(--primary-bg-hover); }
-
-.password-eye-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; z-index:3; }
-
-/* Light-mode readability fixes without changing the existing dark design. */
-.theme-light .profile-header-card h4.text-white { color:#1e293b !important; }
-.theme-light #accountsGrid .text-white { color:#1e293b !important; }
-.theme-light .table-container td.text-white { color:#1e293b !important; }
-.theme-light .table-container td .text-white { color:#1e293b !important; }
-.theme-light .text-slate-300 { color:#475569 !important; }
-.theme-light .text-slate-400 { color:#64748b !important; }
-.theme-light .sidebar-btn { color:#64748b !important; }
-.theme-light .sidebar-btn.active { color:var(--primary) !important; }
-.theme-light .profile-header-card { box-shadow:0 8px 24px rgba(15,23,42,.06); }
-
 @media (max-width: 640px) {
-    .table-container { height: 360px !important; max-height: 360px !important; }
-    #accountsGrid .account-card { height:150px; min-height:150px; padding:16px; }
+    .table-container { max-height: 360px !important; }
 }
+
+/* Confirmation dialog is native/accessible via confirm(), while this keeps logout controls consistent. */
+.logout-btn { min-height: 40px; }
