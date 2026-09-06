@@ -1,19 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="so">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title data-lang-en="Finance Wallet System" data-lang-so="Nidaamka Finance Wallet">Finance Wallet System</title>
-    <link rel="icon" href="icon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Finance Wallets</title>
+<link href="icon.png" rel="icon"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
         /* Main color: #10b981 */
         :root {
             --primary: #10b981;
@@ -383,667 +381,612 @@
             scrollbar-width: none;
         }
     </style>
-    
 </head>
 <body class="theme-dark" id="bodyCtx">
-
-    <!-- ==================== LOGIN PAGE ==================== -->
-<div id="loginPage" class="min-h-screen flex items-center justify-center p-4" style="background: var(--page-bg);">
-
-    <div class="card" style="max-width: 420px; width: 100%; min-height: auto;">
-
-        <!-- Logo -->
-        <div class="text-center mb-8">
-
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full" style="background: var(--primary); color: white; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);">
-                <i class="fa-solid fa-wallet text-3xl"></i>
-            </div>
-
-            <h2 class="text-3xl font-bold mt-4" style="color: var(--primary);" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets">Finance Wallets</h2>
-
-            <p class="text-slate-400 text-sm mt-2 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i>
-                <span data-lang-en="Log in to access and manage your accounts." data-lang-so="Gal si aad u maamusho akoonnadaada.">Log in to access and manage your accounts.</span>
-            </p>
-
-        </div>
-
-        <!-- Login Form -->
-        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
-
-            <div>
-                <label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
-                    <i class="fa-solid fa-user" style="color: var(--primary);"></i>
-                    <span data-lang-en="Username" data-lang-so="Magaca isticmaalaha">Username</span>
-                </label>
-                <div class="relative">
-                    <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                    <input
-                        type="text"
-                        id="loginUser"
-                        value="admin@system.com"
-                        required
-                        class="input-field pl-12">
-                </div>
-            </div>
-
-            <div>
-                <label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
-                    <i class="fa-solid fa-lock" style="color: var(--primary);"></i>
-                    <span data-lang-en="Password" data-lang-so="Furaha sirta ah">Password</span>
-                </label>
-                <div class="relative">
-                    <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                    <input
-                        type="password"
-                        id="loginPass"
-                        placeholder="Enter your key"
-                        data-placeholder-en="Enter your key"
-                        data-placeholder-so="Geli furahaaga sirta ah"
-                        required
-                        class="input-field pl-12 pr-12">
-                    <button type="button" onclick="toggleLoginPassword()" id="loginPassToggle" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-400" aria-label="Show password">
-                        <i class="fa-solid fa-eye"></i>
-                    </button>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-primary w-full">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                <span data-lang-en="Login" data-lang-so="Gal">Login</span>
-            </button>
-
-            <p id="loginError" class="hidden flex items-center justify-center gap-2 text-red-400 text-sm">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span data-lang-en="Invalid username or password!" data-lang-so="Magaca isticmaalaha ama furaha sirta ah waa khalad!">Invalid username or password!</span>
-            </p>
-
-        </form>
-
-        <div class="mt-8 pt-5 border-t border-slate-700/50 text-center">
-            <p class="flex items-center justify-center gap-2 text-sm font-semibold" style="color: var(--primary);">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span data-lang-en="Fast & Secure System" data-lang-so="Nidaam Degdeg ah oo Ammaan ah">Fast &amp; Secure System</span>
-            </p>
-            <p class="mt-2 text-xs text-slate-500 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-lock" style="color: var(--primary); opacity: 0.5;"></i>
-                <span data-lang-en="Your data is protected and encrypted." data-lang-so="Xogtaada waa la ilaaliyay oo la sirgaliyay.">Your data is protected and encrypted.</span>
-            </p>
-        </div>
-    </div>
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="min-h-screen flex items-center justify-center p-4" id="loginPage" style="background: var(--page-bg);">
+<div class="card" style="max-width: 420px; width: 100%; min-height: auto;">
+<!-- Logo -->
+<div class="text-center mb-8">
+<div class="inline-flex items-center justify-center w-20 h-20 rounded-full" style="background: var(--primary); color: white; box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);">
+<i class="fa-solid fa-wallet text-3xl"></i>
 </div>
-
-    <!-- ==================== APP ==================== -->
-    <div id="appContainer" class="hidden pb-20 md:pb-0" style="background: var(--page-bg);">
-
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="fixed inset-0 flex justify-center items-center z-50 hidden" style="background: var(--overlay-bg); backdrop-filter: blur(4px);">
-            <div class="loader"></div>
+<h2 class="text-3xl font-bold mt-4" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets" style="color: var(--primary);">
+                Finance Wallets
+            </h2>
+<p class="text-slate-400 text-sm mt-2 flex items-center justify-center gap-2">
+<i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i>
+<span data-lang-en="Log in to access and manage your accounts." data-lang-so="Gal si aad u maamusho akoonnadaada.">Gal si aad u maamusho akoonnadaada.</span>
+</p>
+</div>
+<!-- Login Form -->
+<form class="space-y-5" id="loginForm" onsubmit="handleLogin(event)">
+<div>
+<label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
+<i class="fa-solid fa-user" style="color: var(--primary);"></i>
+<span data-lang-en="Username" data-lang-so="Magaca isticmaalaha">Magaca isticmaalaha</span>
+</label>
+<div class="relative">
+<i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+<input class="input-field pl-12" id="loginUser" required="" type="text" value="admin@system.com"/>
+</div>
+</div>
+<div>
+<label class="flex items-center gap-2 text-xs font-semibold uppercase text-slate-400 mb-2">
+<i class="fa-solid fa-lock" style="color: var(--primary);"></i>
+<span data-lang-en="Password" data-lang-so="Password">Password</span>
+</label>
+<div class="relative">
+<i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+<input class="input-field pl-12 pr-12" data-placeholder-en="Enter your password" data-placeholder-so="Geli password-kaaga" id="loginPass" placeholder="Enter your password" required="" type="password"/>
+<button aria-label="Show password" class="password-eye-btn absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400" onclick="togglePasswordVisibility('loginPass', 'loginPassEye')" type="button">
+<i class="fa-solid fa-eye" id="loginPassEye"></i>
+</button>
+</div>
+</div>
+<button class="btn-primary w-full" type="submit">
+<i class="fa-solid fa-right-to-bracket"></i>
+<span data-lang-en="Login" data-lang-so="Gal">Gal</span>
+</button>
+<p class="hidden flex items-center justify-center gap-2 text-red-400 text-sm" id="loginError">
+<i class="fa-solid fa-circle-exclamation"></i>
+                Username ama Password khalad!
+            </p>
+</form>
+<div class="mt-8 pt-5 border-t border-slate-700/50 text-center">
+<p class="flex items-center justify-center gap-2 text-sm font-semibold" style="color: var(--primary);">
+<i class="fa-solid fa-shield-halved"></i>
+<span data-lang-en="Fast &amp; Secure system" data-lang-so="Nidaam Degdeg ah oo Ammaan ah">Nidaam Degdeg ah oo Ammaan ah</span>
+</p>
+<p class="mt-2 text-xs text-slate-500 flex items-center justify-center gap-2">
+<i class="fa-solid fa-lock" style="color: var(--primary); opacity: 0.5;"></i>
+<span data-lang-en="Your data is protected and encrypted." data-lang-so="Xogtaada waa la ilaaliyay oo waa la sirgaliyay.">Xogtaada waa la ilaaliyay oo waa la sirgaliyay.</span>
+</p>
+</div>
+</div>
+</div>
+<!-- ==================== APP ==================== -->
+<div class="hidden pb-20 md:pb-0" id="appContainer" style="background: var(--page-bg);">
+<!-- Loading Overlay -->
+<div class="fixed inset-0 flex justify-center items-center z-50 hidden" id="loadingOverlay" style="background: var(--overlay-bg); backdrop-filter: blur(4px);">
+<div class="loader"></div>
+</div>
+<!-- Session Timeout Warning -->
+<div class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-2xl z-50 text-sm font-bold flex items-center gap-3" id="sessionWarning" style="background: var(--primary); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);">
+<i class="fa-solid fa-triangle-exclamation"></i>
+            ⚠Waxaad ka maqnaan doontaa 1 daqiiqo gudahood! Fadlan dhaqdhaqaaq ku samee.
         </div>
-
-        <!-- Session Timeout Warning -->
-        <div id="sessionWarning" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-2xl z-50 text-sm font-bold flex items-center gap-3" style="background: var(--primary); box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span data-lang-en="⚠ You will be logged out in 1 minute. Please stay active." data-lang-so="⚠ Waxaad ka maqnaan doontaa 1 daqiiqo gudahood. Fadlan dhaqdhaqaaq samee.">⚠ Waxaad ka maqnaan doontaa 1 daqiiqo gudahood. Fadlan dhaqdhaqaaq samee.</span>
-        </div>
-
-        <div class="flex flex-col md:flex-row min-h-screen">
-
-            <!-- SIDEBAR -->
-            <aside class="hidden md:flex w-64 flex-col justify-between p-6" style="background: var(--surface-strong); backdrop-filter: blur(10px); border-right: 1px solid var(--border-color);">
-                <div>
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="p-2.5 rounded-xl text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
-                            <i class="fa-solid fa-wallet text-xl"></i>
-                        </div>
-                        <span class="text-xl font-bold tracking-wider" style="color: var(--primary);" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets">Finance Wallets</span>
-                    </div>
-                    <nav class="space-y-1.5">
-                        <button onclick="switchTab('dashboard')" class="sidebar-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-dashboard">
-                            <i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i>
-                            <span data-lang-en="Dashboard" data-lang-so="Dashboard">Dashboard</span>
-                        </button>
-                        <button onclick="switchTab('deposit')" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-deposit">
-                            <i class="fa-solid fa-arrow-down" style="color: var(--primary);"></i>
-                            <span data-lang-en="Deposit Money" data-lang-so="Ku Shubo Lacag">Ku shub lacag</span>
-                        </button>
-                        <button onclick="switchTab('withdraw')" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-withdraw">
-                            <i class="fa-solid fa-arrow-up" style="color: var(--primary);"></i>
-                            <span data-lang-en="Withdraw Money" data-lang-so="Ka Bax Lacag">La bax lacag</span>
-                        </button>
-                        <button onclick="switchTab('loans')" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-loans">
-                            <i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary);"></i>
-                            <span data-lang-en="Loan Management" data-lang-so="Maaraynta Amaahda">Maaraynta Amaahda</span>
-                        </button>
-                        <button onclick="switchTab('reports')" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-reports">
-                            <i class="fa-solid fa-chart-simple" style="color: var(--primary);"></i>
-                            <span data-lang-en="Reports" data-lang-so="Warbixinno">Warbixinno</span>
-                        </button>
-                        <button onclick="switchTab('settings')" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-settings">
-                            <i class="fa-solid fa-gear" style="color: var(--primary);"></i>
-                            <span data-lang-en="Settings & Profile" data-lang-so="Hagaajinta iyo Profile">Habaynta</span>
-                        </button>
-                    </nav>
-                </div>
-                <div class="pt-6 border-t border-slate-700/50 text-sm text-slate-400">
-                    <p id="liveClock" class="font-mono font-bold mb-1" style="color: var(--primary);"></p>
-                    <p id="greetingText" class="italic text-slate-500"></p>
-                    <button onclick="handleLogout()" class="mt-3 w-full text-xs border rounded-xl py-2 flex items-center justify-center gap-2 transition-all duration-300" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span data-lang-en="Logout" data-lang-so="Ka bax">Logout</span>
-                    </button>
-                </div>
-            </aside>
-
-            <!-- MAIN -->
-            <main class="flex-1 p-4 md:p-8 overflow-y-auto" style="background: var(--page-bg);">
-
-                <!-- Profile Card -->
-                <div class="card profile-card mb-6" style="min-height: auto;">
-
-                    <div class="flex items-center justify-between">
-
-                        <div>
-                            <div class="flex items-center gap-3">
-                                <div class="w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-xl text-white flex items-center gap-2">
-                                        <span id="profileName">Abihakim Dev</span>
-                                        <button onclick="toggleVisibility()" id="hideBtn" class="text-slate-400 hover:text-white transition">
-                                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </h4>
-                                    <p class="text-sm text-slate-400 flex items-center gap-2">
-                                        <i class="fa-solid fa-hand-wave" style="color: var(--primary);"></i>
-                                        <span id="mGreetingText" data-lang-en="Welcome back 👋" data-lang-so="Ku soo dhawoow 👋">Welcome back 👋</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="avatarCircle" class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ring-4" style="background: var(--primary); ring-color: rgba(16, 185, 129, 0.3);">
+<div class="flex flex-col md:flex-row min-h-screen">
+<!-- SIDEBAR -->
+<aside class="hidden md:flex w-64 flex-col justify-between p-6" style="background: var(--surface-strong); backdrop-filter: blur(10px); border-right: 1px solid var(--border-color);">
+<div>
+<div class="flex items-center gap-3 mb-8">
+<div class="p-2.5 rounded-xl text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
+<i class="fa-solid fa-wallet text-xl"></i>
+</div>
+<span class="text-xl font-bold tracking-wider" data-lang-en="Finance Wallets" data-lang-so="Finance Wallets" style="color: var(--primary);">Finance Wallets</span>
+</div>
+<nav class="space-y-1.5">
+<button class="sidebar-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-dashboard" onclick="switchTab('dashboard')">
+<i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i>
+<span data-lang-en="Dashboard" data-lang-so="Dashboard">Dashboard</span>
+</button>
+<button class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-deposit" onclick="switchTab('deposit')">
+<i class="fa-solid fa-arrow-down" style="color: var(--primary);"></i>
+<span data-lang-en="Deposit Money" data-lang-so="Ku Shubo Lacag">Ku shub lacag</span>
+</button>
+<button class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-withdraw" onclick="switchTab('withdraw')">
+<i class="fa-solid fa-arrow-up" style="color: var(--primary);"></i>
+<span data-lang-en="Withdraw Money" data-lang-so="Ka Bax Lacag">La bax lacag</span>
+</button>
+<button class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-loans" onclick="switchTab('loans')">
+<i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Loan Management" data-lang-so="Maaraynta Amaahda">Maaraynta Amaahda</span>
+</button>
+<button class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-reports" onclick="switchTab('reports')">
+<i class="fa-solid fa-chart-simple" style="color: var(--primary);"></i>
+<span data-lang-en="Reports" data-lang-so="Warbixinno">Warbixinno</span>
+</button>
+<button class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white font-medium text-left" id="sidebar-settings" onclick="switchTab('settings')">
+<i class="fa-solid fa-gear" style="color: var(--primary);"></i>
+<span data-lang-en="Settings &amp; Profile" data-lang-so="Hagaajinta iyo Profile">Habaynta</span>
+</button>
+</nav>
+</div>
+<div class="pt-6 border-t border-slate-700/50 text-sm text-slate-400">
+<p class="font-mono font-bold mb-1" id="liveClock" style="color: var(--primary);"></p>
+<p class="italic text-slate-500" id="greetingText"></p>
+<button class="mt-3 w-full text-xs border rounded-xl py-2 flex items-center justify-center gap-2 transition-all duration-300" onclick="handleLogout()" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span data-lang-en="Logout" data-lang-so="Ka Bax">Ka Bax</span>
+</button>
+</div>
+</aside>
+<!-- MAIN -->
+<main class="flex-1 p-4 md:p-8 overflow-y-auto" style="background: var(--page-bg);">
+<!-- Profile Card -->
+<div class="card profile-header-card mb-6" id="profileHeaderCard" style="min-height: auto;">
+<div class="flex items-center justify-between">
+<div>
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-full flex items-center justify-center text-white text-2xl" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
+<i class="fa-solid fa-user"></i>
+</div>
+<div>
+<h4 class="font-bold text-xl text-white flex items-center gap-2">
+<span id="profileName">Abihakim Dev</span>
+<button class="text-slate-400 hover:text-white transition" id="hideBtn" onclick="toggleVisibility()">
+<i class="fa-solid fa-eye" id="eyeIcon"></i>
+</button>
+</h4>
+<p class="text-sm text-slate-400 flex items-center gap-2">
+<i class="fa-solid fa-hand-wave" style="color: var(--primary);"></i>
+<span data-lang-en="Welcome back 👋" data-lang-so="Ku soo dhawoow 👋" id="mGreetingText">Ku soo dhawoow 👋</span>
+</p>
+</div>
+</div>
+</div>
+<div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ring-4" id="avatarCircle" style="background: var(--primary); ring-color: rgba(16, 185, 129, 0.3);">
                             A
                         </div>
-
-                    </div>
-
-                    <div class="mt-6">
-                        <div class="relative">
-                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                            <input
-                                type="text"
-                                id="accountSearch"
-                                oninput="filterAccounts()"
-                                placeholder="Search accounts..." data-placeholder-en="Search accounts..." data-placeholder-so="Raadi akoonnada..."
-                                class="input-field pl-12">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DASHBOARD -->
-                <section id="view-dashboard" class="space-y-6">
-
-                    <div class="card" style="min-height: auto;">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <h2 class="flex items-center gap-3 text-2xl font-bold" style="color: var(--primary);">
-                                <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </div>
-                                <span data-lang-en="Overall Money Activity" data-lang-so="Dhaqdhaqaaqa Guud ee Lacagta">Overall Money Activity</span>
-                            </h2>
-                            <span class="text-sm text-slate-400 flex items-center gap-2 px-4 py-2 rounded-xl" style="background: var(--primary-bg);">
-                                <i class="fa-solid fa-wallet" style="color: var(--primary);"></i>
-                                <span data-lang-en="Finance Dashboard" data-lang-so="Dashboard-ka Maaliyadda">Finance Dashboard</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div id="accountsGrid" class="accounts-grid"></div>
-                </section>
-
-                <!-- DEPOSIT -->
-                <section id="view-deposit" class="space-y-4 hidden">
-                    <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
-                        <i class="fa-solid fa-arrow-down mr-2" style="color: var(--primary);"></i>
-                        <span data-lang-en="Deposit Money" data-lang-so="Ku shub lacag">Deposit Money</span>
-                    </h2>
-                    <div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
-                        <form id="depositForm" onsubmit="handleDeposit(event)" class="space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Select Account" data-lang-so="Dooro Account-ka">Select accounts</span>
-                                </label>
-                                <select id="depositAccount" onchange="updateDepositCurrencyOptions()" class="input-field"></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-coins" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Currency" data-lang-so="Nooca Lacagta">Currency type</span>
-                                </label>
-                                <select id="depositCurrency" class="input-field"></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Amount to Deposit" data-lang-so="Cadadka Lacagta">Lacagta</span>
-                                </label>
-                                <input type="number" step="any" id="depositAmount" required class="input-field" placeholder="0.00">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-file-lines" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</span>
-                                </label>
-                                <input type="text" id="depositDescription" class="input-field" maxlength="200" placeholder="Tusaale: Mushahar, lacag la soo celiyey..." data-placeholder-en="e.g. Salary, money received..." data-placeholder-so="Tusaale: Mushahar, lacag la soo celiyey...">
-                            </div>
-                            <button type="submit" class="btn-primary w-full">
-                                <i class="fa-solid fa-plus-circle"></i>
-                                <span data-lang-en="Add to Balance" data-lang-so="Ku Shub Balance-ka">Deposit to Balance</span>
-                            </button>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- WITHDRAW -->
-                <section id="view-withdraw" class="space-y-4 hidden">
-                    <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
-                        <i class="fa-solid fa-arrow-up mr-2" style="color: var(--primary);"></i>
-                        <span data-lang-en="Withdraw Money" data-lang-so="La bax lacag">Withdraw Money</span>
-                    </h2>
-                    <div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
-                        <form id="withdrawForm" onsubmit="handleWithdraw(event)" class="space-y-5">
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Select Account" data-lang-so="Dooro Akoonka">Dooro Akoonka</span>
-                                </label>
-                                <select id="withdrawAccount" onchange="updateWithdrawCurrencyOptions()" class="input-field"></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-coins" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Currency" data-lang-so="Nooca Lacagta">Nooca Lacagta</span>
-                                </label>
-                                <select id="withdrawCurrency" class="input-field"></select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Amount to Withdraw" data-lang-so="Cadadka Lacagta">Cadadka Lacagta</span>
-                                </label>
-                                <input type="number" step="any" id="withdrawAmount" required class="input-field" placeholder="0.00">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-file-lines" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</span>
-                                </label>
-                                <input type="text" id="withdrawDescription" class="input-field" maxlength="200" placeholder="Tusaale: Iibsasho, lacag la bixiyey..." data-placeholder-en="e.g. Purchase, money paid out..." data-placeholder-so="Tusaale: Iibsasho, lacag la bixiyey...">
-                            </div>
-                            <button type="submit" class="btn-primary w-full">
-                                <i class="fa-solid fa-minus-circle"></i>
-                                <span data-lang-en="Withdraw" data-lang-so="Ka Bax">Ka bax</span>
-                            </button>
-                        </form>
-                    </div>
-                </section>
-
-                <!-- LOANS -->
-                <section id="view-loans" class="space-y-6 hidden">
-                    <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
-                        <i class="fa-solid fa-hand-holding-dollar mr-2" style="color: var(--primary);"></i>
-                        <span data-lang-en="Loan & Repayment Management" data-lang-so="Nidaamka Amaahda iyo Soo Celinta">Loan &amp; Repayment Management</span>
-                    </h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="card">
-                            <h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
-                                <i class="fa-solid fa-hand-holding-dollar"></i>
-                                <span data-lang-en="Issue New Loan" data-lang-so="Bixi Amaah Cusub">Bixi Amaah Cusub</span>
-                            </h3>
-                            <form id="loanForm" onsubmit="handleGiveLoan(event)" class="space-y-5 flex-1 flex flex-col">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-user" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Borrower Name" data-lang-so="Magaca Qofka Qaadanaya">Magaca Qofka Qaadanaya</span>
-                                    </label>
-                                    <input type="text" id="loanDebtor" required class="input-field">
-                                </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                            <i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
-                                            <span data-lang-en="Source Account" data-lang-so="Account-ka laga jarayo">Akoonka</span>
-                                        </label>
-                                        <select id="loanSource" onchange="updateLoanCurrencyOptions()" class="input-field"></select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                            <i class="fa-solid fa-coins" style="color: var(--primary);"></i>
-                                            <span data-lang-en="Currency" data-lang-so="Nooca lacagta">Lacagta</span>
-                                        </label>
-                                        <select id="loanCurrency" class="input-field"></select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Amount" data-lang-so="Cadadka Lacagta">Cadadka Lacagta</span>
-                                    </label>
-                                    <input type="number" step="any" id="loanAmount" required class="input-field" placeholder="0.00">
-                                </div>
-                                <button type="submit" class="btn-primary w-full mt-auto">
-                                    <i class="fa-solid fa-hand-holding-heart"></i>
-                                    <span data-lang-en="Process Loan" data-lang-so="Bixi Amaahda">Bixi Amaahda</span>
+</div>
+<div class="mt-6">
+<div class="relative">
+<i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"></i>
+<input class="input-field pl-12" id="accountSearch" oninput="filterAccounts()" placeholder="Search accounts..." type="text"/>
+</div>
+</div>
+</div>
+<!-- DASHBOARD -->
+<section class="space-y-6" id="view-dashboard">
+<div class="card" style="min-height: auto;">
+<div class="flex items-center justify-between flex-wrap gap-3">
+<h2 class="flex items-center gap-3 text-2xl font-bold" style="color: var(--primary);">
+<div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white" style="background: var(--primary); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+<span data-lang-en="Overall Money Activity" data-lang-so="Dhaqdhaqaaqa Guud ee Lacagta">Dhaqdhaqaaqa Guud ee Lacagta</span>
+</h2>
+<span class="text-sm text-slate-400 flex items-center gap-2 px-4 py-2 rounded-xl" style="background: var(--primary-bg);">
+<i class="fa-solid fa-wallet" style="color: var(--primary);"></i>
+<span data-lang-en="Finance Dashboard" data-lang-so="Dashboard-ka Maaliyadda">Dashboard-ka Maaliyadda</span>
+</span>
+</div>
+</div>
+<div class="accounts-grid" id="accountsGrid"></div>
+</section>
+<!-- DEPOSIT -->
+<section class="space-y-4 hidden" id="view-deposit">
+<h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
+<i class="fa-solid fa-arrow-down mr-2" style="color: var(--primary);"></i>
+<span data-lang-en="Deposit Money" data-lang-so="Ku shub lacag">Ku shub lacag</span>
+</h2>
+<div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
+<form class="space-y-5" id="depositForm" onsubmit="handleDeposit(event)">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
+<span data-lang-en="Select Account" data-lang-so="Dooro Account-ka">Select accounts</span>
+</label>
+<select class="input-field" id="depositAccount" onchange="updateDepositCurrencyOptions()"></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-coins" style="color: var(--primary);"></i>
+<span data-lang-en="Currency" data-lang-so="Nooca Lacagta">Currency type</span>
+</label>
+<select class="input-field" id="depositCurrency"></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Amount to Deposit" data-lang-so="Cadadka Lacagta">Lacagta</span>
+</label>
+<input class="input-field" id="depositAmount" placeholder="0.00" required="" step="any" type="number"/>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-file-lines" style="color: var(--primary);"></i>
+<span data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</span>
+</label>
+<input class="input-field" data-placeholder-en="e.g. Salary, money received..." data-placeholder-so="Tusaale: Mushahar, lacag la soo celiyey..." id="depositDescription" maxlength="200" placeholder="Tusaale: Mushahar, lacag la soo celiyey..." type="text"/>
+</div>
+<button class="btn-primary w-full" type="submit">
+<i class="fa-solid fa-plus-circle"></i>
+<span data-lang-en="Add to Balance" data-lang-so="Ku Shub Balance-ka">Deposit to Balance</span>
+</button>
+</form>
+</div>
+</section>
+<!-- WITHDRAW -->
+<section class="space-y-4 hidden" id="view-withdraw">
+<h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
+<i class="fa-solid fa-arrow-up mr-2" style="color: var(--primary);"></i>
+<span data-lang-en="Withdraw Money" data-lang-so="La bax lacag">La bax lacag</span>
+</h2>
+<div class="card" style="max-width: 600px; width: 100%; min-height: auto;">
+<form class="space-y-5" id="withdrawForm" onsubmit="handleWithdraw(event)">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
+<span data-lang-en="Select Account" data-lang-so="Dooro Akoonka">Dooro Akoonka</span>
+</label>
+<select class="input-field" id="withdrawAccount" onchange="updateWithdrawCurrencyOptions()"></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-coins" style="color: var(--primary);"></i>
+<span data-lang-en="Currency" data-lang-so="Nooca Lacagta">Nooca Lacagta</span>
+</label>
+<select class="input-field" id="withdrawCurrency"></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Amount to Withdraw" data-lang-so="Cadadka Lacagta">Cadadka Lacagta</span>
+</label>
+<input class="input-field" id="withdrawAmount" placeholder="0.00" required="" step="any" type="number"/>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-file-lines" style="color: var(--primary);"></i>
+<span data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</span>
+</label>
+<input class="input-field" data-placeholder-en="e.g. Purchase, money paid out..." data-placeholder-so="Tusaale: Iibsasho, lacag la bixiyey..." id="withdrawDescription" maxlength="200" placeholder="Tusaale: Iibsasho, lacag la bixiyey..." type="text"/>
+</div>
+<button class="btn-primary w-full" type="submit">
+<i class="fa-solid fa-minus-circle"></i>
+<span data-lang-en="Withdraw" data-lang-so="Ka Bax">Ka bax</span>
+</button>
+</form>
+</div>
+</section>
+<!-- LOANS -->
+<section class="space-y-6 hidden" id="view-loans">
+<h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
+<i class="fa-solid fa-hand-holding-dollar mr-2" style="color: var(--primary);"></i>
+<span data-lang-en="Loans &amp; Repayments" data-lang-so="Nidaamka Amaahda iyo Soo Celinta">Nidaamka Amaahda iyo Soo Celinta</span>
+</h2>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="card">
+<h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
+<i class="fa-solid fa-hand-holding-dollar"></i>
+<span data-lang-en="Issue New Loan" data-lang-so="Bixi Amaah Cusub">Bixi Amaah Cusub</span>
+</h3>
+<form class="space-y-5 flex-1 flex flex-col" id="loanForm" onsubmit="handleGiveLoan(event)">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-user" style="color: var(--primary);"></i>
+<span data-lang-en="Borrower Name" data-lang-so="Magaca Qofka Qaadanaya">Magaca Qofka Qaadanaya</span>
+</label>
+<input class="input-field" id="loanDebtor" required="" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
+<span data-lang-en="Source Account" data-lang-so="Account-ka laga jarayo">Akoonka</span>
+</label>
+<select class="input-field" id="loanSource" onchange="updateLoanCurrencyOptions()"></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-coins" style="color: var(--primary);"></i>
+<span data-lang-en="Currency" data-lang-so="Nooca lacagta">Lacagta</span>
+</label>
+<select class="input-field" id="loanCurrency"></select>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Amount" data-lang-so="Cadadka Lacagta">Cadadka Lacagta</span>
+</label>
+<input class="input-field" id="loanAmount" placeholder="0.00" required="" step="any" type="number"/>
+</div>
+<button class="btn-primary w-full mt-auto" type="submit">
+<i class="fa-solid fa-hand-holding-heart"></i>
+<span data-lang-en="Process Loan" data-lang-so="Bixi Amaahda">Bixi Amaahda</span>
+</button>
+</form>
+</div>
+<div class="card">
+<h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
+<i class="fa-solid fa-arrow-rotate-left"></i>
+<span data-lang-en="Repay Active Loan" data-lang-so="Soo Celi Amaahda">Soo Celi Amaahda</span>
+</h3>
+<form class="space-y-5 flex-1 flex flex-col" id="repayForm" onsubmit="handleRepayLoan(event)">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
+<span data-lang-en="Select Active Loan" data-lang-so="Dooro Amaahda Tagan">Dooro Amaahda</span>
+</label>
+<select class="input-field" id="repayLoanSelect" required=""></select>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Repayment Amount" data-lang-so="Cadadka Lagu Soo Celiyay">Cadadka Soo Celinta</span>
+</label>
+<input class="input-field" id="repayAmount" placeholder="0.00" required="" step="any" type="number"/>
+</div>
+<button class="btn-primary w-full mt-auto" type="submit">
+<i class="fa-solid fa-check-circle"></i>
+<span data-lang-en="Submit Repayment" data-lang-so="Hagaaji soo celinta">Hagaaji soo celinta</span>
+</button>
+</form>
+</div>
+</div>
+<div class="card" style="min-height: auto; overflow: hidden;">
+<h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
+<i class="fa-solid fa-book"></i>
+<span data-lang-en="Active Loans Ledger" data-lang-so="Diiwaanka Amaahda Tagan">Diiwaanka Amaahda Tagan</span>
+</h3>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th data-lang-en="Person" data-lang-so="Qofka">Qofka</th>
+<th data-lang-en="Account" data-lang-so="Akoonka">Akoonka</th>
+<th data-lang-en="Original" data-lang-so="Hore">Hore</th>
+<th data-lang-en="Remaining" data-lang-so="Ku Hadhay">Ku Hadhay</th>
+<th data-lang-en="Status" data-lang-so="Xaaladda">Xaaladda</th>
+<th data-lang-en="Action" data-lang-so="Ficil">Ficil</th>
+</tr>
+</thead>
+<tbody id="loanTableBody"></tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- REPORTS -->
+<section class="space-y-6 hidden" id="view-reports">
+<h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
+<i class="fa-solid fa-chart-simple mr-2" style="color: var(--primary);"></i>
+<span data-lang-en="Activity Reports" data-lang-so="Warbixinaha Dhaqdhaqaaqa">Warbixinaha Dhaqdhaqaaqa</span>
+</h2>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="card" style="min-height: 100px;">
+<div class="flex items-center justify-between">
+<span class="text-sm text-slate-400 flex items-center gap-2">
+<i class="fa-solid fa-arrow-down" style="color: var(--primary);"></i>
+<span data-lang-en="Total Deposits" data-lang-so="Wadarta Ku Shubashada">Ku Shubashada</span>
+</span>
+<span class="text-2xl font-bold" id="totalDeposits" style="color: var(--primary);">0</span>
+</div>
+</div>
+<div class="card" style="min-height: 100px;">
+<div class="flex items-center justify-between">
+<span class="text-sm text-slate-400 flex items-center gap-2">
+<i class="fa-solid fa-arrow-up" style="color: var(--primary);"></i>
+<span data-lang-en="Total Withdrawals" data-lang-so="Wadarta Ka Bixinta">Ka Bixinta</span>
+</span>
+<span class="text-2xl font-bold" id="totalWithdrawals" style="color: var(--primary);">0</span>
+</div>
+</div>
+<div class="card" style="min-height: 100px;">
+<div class="flex items-center justify-between">
+<span class="text-sm text-slate-400 flex items-center gap-2">
+<i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary);"></i>
+<span data-lang-en="Total Loans Given" data-lang-so="Wadarta Amaahda">Wadarta Amaahda</span>
+</span>
+<span class="text-2xl font-bold" id="totalLoans" style="color: var(--primary);">0</span>
+</div>
+</div>
+</div>
+<div class="card" style="min-height: auto;">
+<div class="flex flex-wrap gap-3 items-center">
+<div class="flex-1 min-w-[150px]">
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-filter" style="color: var(--primary);"></i>
+<span data-lang-en="Filter by Type" data-lang-so="Shaandheey nooca">Shaandheey</span>
+</label>
+<select class="input-field" id="reportFilter" onchange="renderReports()">
+<option data-lang-en="All Transactions" data-lang-so="Dhammaan" value="all">Dhammaan</option>
+<option data-lang-en="Deposits" data-lang-so="Ku Shubo" value="deposit">Ku Shubo</option>
+<option data-lang-en="Withdrawals" data-lang-so="Ka Bax" value="withdraw">Ka Bax</option>
+<option data-lang-en="Loans" data-lang-so="Amaah" value="loan">Amaah</option>
+<option data-lang-en="Repayments" data-lang-so="Soo Celin" value="repayment">Soo Celin</option>
+</select>
+</div>
+<div class="flex-1 min-w-[150px]">
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i>
+<span data-lang-en="Date Range" data-lang-so="Muddada">Muddada</span>
+</label>
+<input class="input-field" id="reportDateFrom" type="date"/>
+</div>
+<div class="flex-1 min-w-[150px]">
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i>
+<span data-lang-en="To" data-lang-so="Ilaa">Ilaa</span>
+</label>
+<input class="input-field" id="reportDateTo" type="date"/>
+</div>
+<div class="flex gap-2 items-end">
+<button class="btn-primary" onclick="renderReports()">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span data-lang-en="Apply Filter" data-lang-so="Kudabaq">Kudabaq</span>
+</button>
+<button class="btn-outline" onclick="clearReportFilters()">
+<i class="fa-solid fa-rotate-right"></i>
+<span data-lang-en="Clear" data-lang-so="Nadiifi">Nadiifi</span>
+</button>
+</div>
+</div>
+</div>
+<div class="card" style="min-height: auto; overflow: hidden;">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-md font-semibold flex items-center gap-2" style="color: var(--primary);">
+<i class="fa-solid fa-clock-rotate-left"></i>
+<span data-lang-en="Transaction History" data-lang-so="Taariikhda Dhaqdhaqaaqa">Taariikhda Dhaqdhaqaaqa</span>
+</h3>
+<span class="text-xs text-slate-400 px-3 py-1.5 rounded-full" id="transactionCount" style="background: var(--primary-bg);">0 transactions</span>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th data-lang-en="Date" data-lang-so="Taariikh">Taariikh</th>
+<th data-lang-en="Type" data-lang-so="Nooca">Nooca</th>
+<th data-lang-en="Account" data-lang-so="Account-ka">Akoonka</th>
+<th data-lang-en="Currency" data-lang-so="Lacagta">Lacagta</th>
+<th data-lang-en="Amount" data-lang-so="Qadarka">Qadarka</th>
+<th data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</th>
+</tr>
+</thead>
+<tbody id="reportTableBody"></tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- SETTINGS -->
+<section class="space-y-6 hidden" id="view-settings">
+<h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
+<i class="fa-solid fa-gear mr-2" style="color: var(--primary);"></i>
+<span data-lang-en="System Settings" data-lang-so="Habaynta Nidaamka">Habaynta Nidaamka</span>
+</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="card">
+<h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
+<i class="fa-solid fa-user-gear"></i>
+<span data-lang-en="User Profile" data-lang-so="Profile information">Profile information</span>
+</h3>
+<div class="space-y-4 flex-1 flex flex-col">
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-user" style="color: var(--primary);"></i>
+<span data-lang-en="Full Name" data-lang-so="Magaca oo Dhamaystiran">Magaca oo Dhamaystiran</span>
+</label>
+<input class="input-field" id="settingsName" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-briefcase" style="color: var(--primary);"></i>
+<span data-lang-en="User Role" data-lang-so="Doorka Isticmaalaha">Doorka Isticmaalaha</span>
+</label>
+<input class="input-field" id="settingsRole" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
+<i class="fa-solid fa-lock" style="color: var(--primary);"></i>
+<span data-lang-en="Update Password" data-lang-so="Cusboonaysii Password-ka">Cusboonaysii Password-ka</span>
+</label>
+<div class="relative">
+<input class="input-field pr-12" data-placeholder-en="Enter new password" data-placeholder-so="Geli password cusub" id="settingsNewPassword" placeholder="Enter new password" type="password"/>
+<button aria-label="Show password" class="password-eye-btn absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-400" onclick="togglePasswordVisibility('settingsNewPassword', 'settingsPassEye')" type="button">
+<i class="fa-solid fa-eye" id="settingsPassEye"></i>
+</button>
+</div>
+</div>
+<button class="btn-primary w-full mt-auto" onclick="saveProfile()">
+<i class="fa-solid fa-floppy-disk"></i>
+                                    Save info
                                 </button>
-                            </form>
-                        </div>
-                        <div class="card">
-                            <h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
-                                <i class="fa-solid fa-arrow-rotate-left"></i>
-                                <span data-lang-en="Repay Active Loan" data-lang-so="Soo Celi Amaahda">Soo Celi Amaahda</span>
-                            </h3>
-                            <form id="repayForm" onsubmit="handleRepayLoan(event)" class="space-y-5 flex-1 flex flex-col">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-list-check" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Select Active Loan" data-lang-so="Dooro Amaahda Tagan">Dooro Amaahda</span>
-                                    </label>
-                                    <select id="repayLoanSelect" required class="input-field"></select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-circle-dollar" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Repayment Amount" data-lang-so="Cadadka Lagu Soo Celiyay">Cadadka Soo Celinta</span>
-                                    </label>
-                                    <input type="number" step="any" id="repayAmount" required class="input-field" placeholder="0.00">
-                                </div>
-                                <button type="submit" class="btn-primary w-full mt-auto">
-                                    <i class="fa-solid fa-check-circle"></i>
-                                    <span data-lang-en="Submit Repayment" data-lang-so="Hagaaji soo celinta">Hagaaji soo celinta</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="card" style="min-height: auto; overflow: hidden;">
-                        <h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
-                            <i class="fa-solid fa-book"></i>
-                            <span data-lang-en="Active Loans Ledger" data-lang-so="Diiwaanka Amaahda Tagan">Diiwaanka Amaahda Tagan</span>
-                        </h3>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th data-lang-en="Borrower" data-lang-so="Qofka">Borrower</th>
-                                        <th data-lang-en="Account" data-lang-so="Akoonka">Account</th>
-                                        <th data-lang-en="Original" data-lang-so="Hore">Original</th>
-                                        <th data-lang-en="Remaining" data-lang-so="Ku Hadhay">Remaining</th>
-                                        <th data-lang-en="Status" data-lang-so="Xaaladda">Status</th>
-                                        <th data-lang-en="Action" data-lang-so="Ficil">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="loanTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- REPORTS -->
-                <section id="view-reports" class="space-y-6 hidden">
-                    <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
-                        <i class="fa-solid fa-chart-simple mr-2" style="color: var(--primary);"></i>
-                        <span data-lang-en="Transaction Reports" data-lang-so="Warbixinaha Dhaqdhaqaaqa">Transaction Reports</span>
-                    </h2>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="card" style="min-height: 100px;">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-arrow-down" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Total Deposits" data-lang-so="Wadarta Ku Shubashada">Ku Shubashada</span>
-                                </span>
-                                <span class="text-2xl font-bold" style="color: var(--primary);" id="totalDeposits">0</span>
-                            </div>
-                        </div>
-                        <div class="card" style="min-height: 100px;">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-arrow-up" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Total Withdrawals" data-lang-so="Wadarta Ka Bixinta">Ka Bixinta</span>
-                                </span>
-                                <span class="text-2xl font-bold" style="color: var(--primary);" id="totalWithdrawals">0</span>
-                            </div>
-                        </div>
-                        <div class="card" style="min-height: 100px;">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-400 flex items-center gap-2">
-                                    <i class="fa-solid fa-hand-holding-dollar" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Total Loans Given" data-lang-so="Wadarta Amaahda">Wadarta Amaahda</span>
-                                </span>
-                                <span class="text-2xl font-bold" style="color: var(--primary);" id="totalLoans">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="min-height: auto;">
-                        <div class="flex flex-wrap gap-3 items-center">
-                            <div class="flex-1 min-w-[150px]">
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-filter" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Filter by Type" data-lang-so="Shaandheey nooca">Shaandheey</span>
-                                </label>
-                                <select id="reportFilter" onchange="renderReports()" class="input-field">
-                                    <option value="all" data-lang-en="All Transactions" data-lang-so="Dhammaan">Dhammaan</option>
-                                    <option value="deposit" data-lang-en="Deposits" data-lang-so="Ku Shubo">Ku Shubo</option>
-                                    <option value="withdraw" data-lang-en="Withdrawals" data-lang-so="Ka Bax">Ka Bax</option>
-                                    <option value="loan" data-lang-en="Loans" data-lang-so="Amaah">Amaah</option>
-                                    <option value="repayment" data-lang-en="Repayments" data-lang-so="Soo Celin">Soo Celin</option>
-                                </select>
-                            </div>
-                            <div class="flex-1 min-w-[150px]">
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i>
-                                    <span data-lang-en="Date Range" data-lang-so="Muddada">Muddada</span>
-                                </label>
-                                <input type="date" id="reportDateFrom" class="input-field">
-                            </div>
-                            <div class="flex-1 min-w-[150px]">
-                                <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-calendar-day" style="color: var(--primary);"></i>
-                                    <span data-lang-en="To" data-lang-so="Ilaa">Ilaa</span>
-                                </label>
-                                <input type="date" id="reportDateTo" class="input-field">
-                            </div>
-                            <div class="flex gap-2 items-end">
-                                <button onclick="renderReports()" class="btn-primary">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                    <span data-lang-en="Apply Filter" data-lang-so="Kudabaq">Kudabaq</span>
-                                </button>
-                                <button onclick="clearReportFilters()" class="btn-outline">
-                                    <i class="fa-solid fa-rotate-right"></i>
-                                    <span data-lang-en="Clear" data-lang-so="Nadiifi">Nadiifi</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="min-height: auto; overflow: hidden;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-md font-semibold flex items-center gap-2" style="color: var(--primary);">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span data-lang-en="Transaction History" data-lang-so="Taariikhda Dhaqdhaqaaqa">Taariikhda Dhaqdhaqaaqa</span>
-                            </h3>
-                            <span class="text-xs text-slate-400 px-3 py-1.5 rounded-full" style="background: var(--primary-bg);" id="transactionCount">0 transactions</span>
-                        </div>
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th data-lang-en="Date" data-lang-so="Taariikh">Taariikh</th>
-                                        <th data-lang-en="Type" data-lang-so="Nooca">Nooca</th>
-                                        <th data-lang-en="Account" data-lang-so="Account-ka">Akoonka</th>
-                                        <th data-lang-en="Currency" data-lang-so="Lacagta">Lacagta</th>
-                                        <th data-lang-en="Amount" data-lang-so="Qadarka">Qadarka</th>
-                                        <th data-lang-en="Description" data-lang-so="Faahfaahin">Faahfaahin</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="reportTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SETTINGS -->
-                <section id="view-settings" class="space-y-6 hidden">
-                    <h2 class="text-lg md:text-2xl font-bold border-b-2 pb-2" style="color: var(--primary); border-color: var(--primary);">
-                        <i class="fa-solid fa-gear mr-2" style="color: var(--primary);"></i>
-                        <span data-lang-en="System Settings" data-lang-so="Habaynta Nidaamka">System Settings</span>
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="card">
-                            <h3 class="text-md font-semibold mb-4 flex items-center gap-2" style="color: var(--primary);">
-                                <i class="fa-solid fa-user-gear"></i>
-                                <span data-lang-en="User Profile" data-lang-so="Profile information">Profile information</span>
-                            </h3>
-                            <div class="space-y-4 flex-1 flex flex-col">
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-user" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Full Name" data-lang-so="Magaca oo Dhamaystiran">Full Name</span>
-                                    </label>
-                                    <input type="text" id="settingsName" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-briefcase" style="color: var(--primary);"></i>
-                                        <span data-lang-en="User Role" data-lang-so="Doorka Isticmaalaha">User Role</span>
-                                    </label>
-                                    <input type="text" id="settingsRole" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase text-slate-400 mb-2 flex items-center gap-2">
-                                        <i class="fa-solid fa-lock" style="color: var(--primary);"></i>
-                                        <span data-lang-en="Update Password" data-lang-so="Cusboonaysii Furaha Sirta">Update Password</span>
-                                    </label>
-                                    <div class="relative">
-                                        <input type="password" id="settingsNewPassword" placeholder="New password" data-placeholder-en="New password" data-placeholder-so="Furaha cusub" class="input-field pr-12">
-                                        <button type="button" onclick="toggleSettingsPassword()" id="settingsPassToggle" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-400" aria-label="Show password"><i class="fa-solid fa-eye"></i></button>
-                                    </div>
-                                </div>
-                                <button onclick="saveProfile()" class="btn-primary w-full mt-auto">
-                                    <i class="fa-solid fa-floppy-disk"></i>
-                                    <span data-lang-en="Save Info" data-lang-so="Kaydi Xogta">Save Info</span>
-                                </button>
-                                <div class="border-t border-slate-700/50 pt-4 mt-4">
-                                    <button onclick="handleLogout()" class="btn-danger w-full">
-                                        <i class="fa-solid fa-right-from-bracket"></i>
-                                        <span data-lang-en="Logout" data-lang-so="Ka bax">Logout</span>
-                                    </button>
-                                    <p class="text-xs text-slate-500 mt-2 text-center"><span data-lang-en="You will be logged out of the system." data-lang-so="Waxaad ka bixi doontaa nidaamka.">You will be logged out of the system.</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="space-y-8 flex-1">
-                                <!-- Language -->
-                                <div>
-                                    <h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
-                                        <i class="fa-solid fa-language"></i>
-                                        <span data-lang-en="System Language" data-lang-so="Luqadda Nidaamka">System Language</span>
+<div class="border-t border-slate-700/50 pt-4 mt-4">
+<button class="btn-danger w-full" onclick="handleLogout()">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span data-lang-en="Logout" data-lang-so="Ka Bax">Ka Bax</span>
+</button>
+<p class="text-xs text-slate-500 mt-2 text-center" data-lang-en="You will be logged out of the system." data-lang-so="Nidaamka ayaa lagaa saari doonaa.">Nidaamka ayaa lagaa saari doonaa.</p>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="space-y-8 flex-1">
+<!-- Language -->
+<div>
+<h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
+<i class="fa-solid fa-language"></i>
+<span data-lang-en="System Language" data-lang-so="Luqadda Nidaamka">Luqadda Nidaamka</span>
+</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="btn-outline w-full" id="lang-btn-en" onclick="setLanguage('en')">
+<i class="fa-solid fa-globe"></i>
+                                            English
+                                        </button>
+<button class="btn-primary w-full" id="lang-btn-so" onclick="setLanguage('so')">
+<i class="fa-solid fa-flag"></i>
+                                            Somali
+                                        </button>
+</div>
+</div>
+<!-- Theme -->
+<div>
+<h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
+<i class="fa-solid fa-palette"></i>
+                                        Naqshadda Midabka
                                     </h3>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <button onclick="setLanguage('en')" id="lang-btn-en" class="btn-outline w-full">
-                                            <i class="fa-solid fa-globe"></i>
-                                            <span data-lang-en="English" data-lang-so="English">English</span>
-                                        </button>
-                                        <button onclick="setLanguage('so')" id="lang-btn-so" class="btn-primary w-full">
-                                            <i class="fa-solid fa-flag"></i>
-                                            <span data-lang-en="Somali" data-lang-so="Soomaali">Somali</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Theme -->
-                                <div>
-                                    <h3 class="flex items-center gap-2 text-lg font-bold mb-3" style="color: var(--primary);">
-                                        <i class="fa-solid fa-palette"></i>
-                                        <span data-lang-en="Theme" data-lang-so="Muuqaalka">Theme</span>
-                                    </h3>
-                                    <div class="flex items-center justify-between rounded-2xl p-4 border" style="background: var(--primary-bg); border-color: rgba(51, 65, 85, 0.5);">
-                                        <span class="flex items-center gap-2 text-slate-300">
-                                            <i class="fa-solid fa-moon"></i>
-                                            <span data-lang-en="Dark" data-lang-so="Madow">Dark</span>
-                                        </span>
-                                        <div id="themeToggle" class="toggle-switch active cursor-pointer" onclick="toggleTheme()">
-                                            <div class="toggle-knob"></div>
-                                        </div>
-                                        <span class="flex items-center gap-2 text-slate-300">
-                                            <i class="fa-solid fa-sun" style="color: var(--primary);"></i>
-                                            <span data-lang-en="Light" data-lang-so="Iftiin">Light</span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Management -->
-                                <div class="border-t border-slate-700/50 pt-6">
-                                    <h3 class="flex items-center gap-2 text-lg font-bold mb-4" style="color: #ef4444;">
-                                        <i class="fa-solid fa-gear"></i>
-                                        <span data-lang-en="Management" data-lang-so="Maamulka">Management</span>
-                                    </h3>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <button onclick="resetAllData()" disabled class="btn-danger opacity-50 cursor-not-allowed">
-                                            <i class="fa-solid fa-trash"></i>
-                                            <span data-lang-en="Reset All" data-lang-so="Dib u celi dhammaan">Reset All</span>
-                                        </button>
-                                        <button onclick="clearLoans()" disabled class="btn-primary opacity-50 cursor-not-allowed">
-                                            <i class="fa-solid fa-money-bill-wave"></i>
-                                            <span data-lang-en="Clear Loans" data-lang-so="Nadiifi Amaahaha">Clear Loans</span>
-                                        </button>
-                                        <button onclick="clearTransactions()" disabled class="btn-primary opacity-50 cursor-not-allowed col-span-2">
-                                            <i class="fa-solid fa-receipt"></i>
-                                            <span data-lang-en="Clear Transactions" data-lang-so="Nadiifi Dhaqdhaqaaqyada">Clear Transactions</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </div>
-
-        <!-- MOBILE NAV -->
-        <nav class="md:hidden fixed bottom-0 left-0 right-0 flex justify-around py-2 z-40" style="background: var(--surface-strong); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color);">
-            <button onclick="switchTab('dashboard')" class="mobile-nav-btn active flex flex-col items-center gap-0.5 text-slate-400" id="mobile-dashboard">
-                <i class="fa-solid fa-gauge-high text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Home" data-lang-so="Guri">Guri</span>
-            </button>
-            <button onclick="switchTab('deposit')" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-deposit">
-                <i class="fa-solid fa-arrow-down text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Deposit" data-lang-so="Kushub">Kushubo</span>
-            </button>
-            <button onclick="switchTab('withdraw')" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-withdraw">
-                <i class="fa-solid fa-arrow-up text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Withdraw" data-lang-so="La Bax">La Bax</span>
-            </button>
-            <button onclick="switchTab('loans')" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-loans">
-                <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Loans" data-lang-so="Amaah">Amaah</span>
-            </button>
-            <button onclick="switchTab('reports')" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-reports">
-                <i class="fa-solid fa-chart-simple text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Reports" data-lang-so="Warbixin">Warbixin</span>
-            </button>
-            <button onclick="switchTab('settings')" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-settings">
-                <i class="fa-solid fa-gear text-lg"></i>
-                <span class="text-[10px] font-medium" data-lang-en="Settings" data-lang-so="Habaynta">Habaynta</span>
-            </button>
-        </nav>
-    </div>
-
-    <script src="script.js"></script>
+<div class="flex items-center justify-between rounded-2xl p-4 border" style="background: var(--primary-bg); border-color: rgba(51, 65, 85, 0.5);">
+<span class="flex items-center gap-2 text-slate-300">
+<i class="fa-solid fa-moon"></i>
+<span data-lang-en="Dark" data-lang-so="Madow">Madow</span>
+</span>
+<div class="toggle-switch active cursor-pointer" id="themeToggle" onclick="toggleTheme()">
+<div class="toggle-knob"></div>
+</div>
+<span class="flex items-center gap-2 text-slate-300">
+<i class="fa-solid fa-sun" style="color: var(--primary);"></i>
+<span data-lang-en="Light" data-lang-so="Iftiin">Iftiin</span>
+</span>
+</div>
+</div>
+<!-- Management -->
+<div class="border-t border-slate-700/50 pt-6">
+<h3 class="flex items-center gap-2 text-lg font-bold mb-4" style="color: #ef4444;">
+<i class="fa-solid fa-gear"></i>
+<span data-lang-en="Management" data-lang-so="Maamulka">Maamulka</span>
+</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="btn-danger opacity-50 cursor-not-allowed" disabled="" onclick="resetAllData()">
+<i class="fa-solid fa-trash"></i>
+<span data-lang-en="Reset All" data-lang-so="Dib u Deji Dhammaan">Dib u Deji Dhammaan</span>
+</button>
+<button class="btn-primary opacity-50 cursor-not-allowed" disabled="" onclick="clearLoans()">
+<i class="fa-solid fa-money-bill-wave"></i>
+<span data-lang-en="Clear Loans" data-lang-so="Nadiifi Amaahda">Nadiifi Amaahda</span>
+</button>
+<button class="btn-primary opacity-50 cursor-not-allowed col-span-2" disabled="" onclick="clearTransactions()">
+<i class="fa-solid fa-receipt"></i>
+<span data-lang-en="Clear Transactions" data-lang-so="Nadiifi Dhaqdhaqaaqyada">Nadiifi Dhaqdhaqaaqyada</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- MOBILE NAV -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 flex justify-around py-2 z-40" style="background: var(--surface-strong); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color);">
+<button class="mobile-nav-btn active flex flex-col items-center gap-0.5 text-slate-400" id="mobile-dashboard" onclick="switchTab('dashboard')">
+<i class="fa-solid fa-gauge-high text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Home" data-lang-so="Guri">Guri</span>
+</button>
+<button class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-deposit" onclick="switchTab('deposit')">
+<i class="fa-solid fa-arrow-down text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Deposit" data-lang-so="Kushub">Kushubo</span>
+</button>
+<button class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-withdraw" onclick="switchTab('withdraw')">
+<i class="fa-solid fa-arrow-up text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Withdraw" data-lang-so="La Bax">La Bax</span>
+</button>
+<button class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-loans" onclick="switchTab('loans')">
+<i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Loans" data-lang-so="Amaah">Amaah</span>
+</button>
+<button class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-reports" onclick="switchTab('reports')">
+<i class="fa-solid fa-chart-simple text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Reports" data-lang-so="Warbixin">Warbixin</span>
+</button>
+<button class="mobile-nav-btn flex flex-col items-center gap-0.5 text-slate-400" id="mobile-settings" onclick="switchTab('settings')">
+<i class="fa-solid fa-gear text-lg"></i>
+<span class="text-[10px] font-medium" data-lang-en="Settings" data-lang-so="Habaynta">Habaynta</span>
+</button>
+</nav>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
